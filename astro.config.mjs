@@ -7,5 +7,9 @@ export default defineConfig({
   integrations: [mdx(), react(), icon()],
   site: 'https://jrgo7.github.io',
   base: 'virtual-exhibit-template',
+  vite: {
+    plugins: [tailwindcss()],
+    resolve: { alias: { '@': '/src' } },
+  },
 });
 
