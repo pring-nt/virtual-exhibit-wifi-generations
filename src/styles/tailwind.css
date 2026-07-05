@@ -1,4 +1,5 @@
-@import "tailwindcss";
+@import "tailwindcss/theme";
+@import "tailwindcss/utilities";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/noto-sans";
@@ -119,13 +120,10 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    .wifi-explorer * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
-    }
-  html {
-    @apply font-sans;
+    .wifi-explorer {
+        @apply bg-background text-foreground font-sans;
     }
 }

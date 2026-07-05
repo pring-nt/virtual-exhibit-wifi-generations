@@ -117,7 +117,7 @@ export default function WifiHeatmapExplorer() {
     const isHeatmap = state.mode === 'heatmap';
 
     return (
-        <div className="flex flex-col gap-4 w-fit">
+        <div className="wifi-explorer flex flex-col gap-4 w-fit">
 
             {/* Mode toggle */}
             <div className="flex items-center gap-2">
