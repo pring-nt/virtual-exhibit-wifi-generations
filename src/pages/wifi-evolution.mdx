@@ -5,8 +5,17 @@ author: "Nacasabog, Joshua; Pascual, Jaica; Trinidad, Nathan; Rosas, Enzo; Quila
 readingTime: "10 minute read"
 ---
 
+import '../styles/tailwind.css';
+import WifiHeatmapExplorer from '../components/WifiHeatmapExplorer/index.jsx';
+
 {/* Actual Content */}
 # The Evolution of WiFi
+
+## Interactive Signal Explorer
+
+Paint walls on the floor plan, then switch to heatmap mode to see how each WiFi generation's signal penetrates your layout.
+
+<WifiHeatmapExplorer client:only="react" />
 
 ## 802.11b (1999)
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris placerat diam sed convallis convallis. Proin auctor arcu sapien, ac bibendum lacus ultricies a. Praesent diam lacus, iaculis id rhoncus et, blandit sit amet neque. Mauris placerat vestibulum nisi, nec rhoncus risus condimentum ac. In et urna at ex feugiat luctus. Morbi rhoncus neque et turpis porttitor, eu porttitor erat imperdiet. Nulla eleifend condimentum libero, et mollis enim venenatis ut. Proin ut volutpat elit, in viverra mi.
@@ -14,23 +23,17 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris placerat diam se
 ## 802.11a (1999)
 Cras facilisis facilisis sem ut tempor. Vestibulum aliquam rhoncus consequat. Nunc mollis ex fringilla iaculis iaculis. Ut neque massa, molestie ut erat in, eleifend interdum leo. Suspendisse enim lectus, porta ut purus et, eleifend cursus ante. Aenean magna justo, ullamcorper sit amet finibus in, elementum a arcu. Cras in felis erat. Nulla facilisi. Aliquam interdum id felis sit amet venenatis. Integer tempus, dui id laoreet dignissim, nibh nunc vestibulum massa, sed efficitur lorem nibh quis tellus. Fusce suscipit at est eget scelerisque. Donec quis justo sit amet tortor facilisis interdum at at tellus. Vestibulum tincidunt eros vel mattis suscipit. Sed iaculis dictum odio quis pellentesque.
 
-
 ## 802.11g (2003)
 Vestibulum rutrum dapibus est, sed rhoncus metus placerat quis. Etiam eu est nisi. Sed a semper purus. Donec eget ante in nulla feugiat vestibulum in ut diam. Suspendisse dictum dui est, quis vestibulum massa lobortis accumsan. Nulla viverra tincidunt nibh ut imperdiet. Sed pretium, erat nec lacinia mattis, ligula mauris iaculis lacus, vel placerat orci erat sit amet eros. Donec eu nulla maximus, pharetra lectus vitae, euismod metus. Sed pulvinar, eros non fringilla commodo, leo est condimentum est, ut ornare libero libero at nunc. Mauris ornare erat non massa dignissim, vel scelerisque mi sagittis. Quisque ut suscipit risus. Integer lobortis semper magna, ut facilisis urna faucibus sit amet.
-
 
 ## 802.11n (2009)
 Curabitur ligula eros, tempus vitae neque fermentum, luctus convallis quam. Morbi pellentesque vestibulum sollicitudin. Aenean eu tempor urna. Integer sodales elit nisi, efficitur bibendum sapien faucibus in. Curabitur fermentum sem eget quam convallis, in tempus nisl fringilla. In egestas bibendum eros, ac cursus nunc semper sit amet. Aliquam at pretium lacus, eu aliquet leo. Donec rhoncus elementum ante ac lobortis. Pellentesque tempor magna in elit gravida, vel laoreet nibh congue. Aliquam sit amet nibh lobortis, volutpat justo ac, pellentesque felis. Phasellus pellentesque nunc eget ultricies posuere. In porta ut enim sed fermentum. Cras ut nisi ligula. Proin enim augue, feugiat dapibus dui ut, sagittis elementum velit. Suspendisse dictum mollis congue. Nulla quis interdum nibh.
 
-
 ## 802.11ac (2013)
 Nullam eleifend bibendum interdum. Donec massa purus, interdum vel ligula in, ullamcorper vulputate diam. Nam vitae justo iaculis, euismod risus eu, tristique mauris. Vivamus semper purus ut nulla elementum hendrerit. Curabitur mattis nulla iaculis blandit rhoncus. Pellentesque luctus diam ac lorem vehicula venenatis vitae in nisl. Pellentesque aliquam feugiat congue. Pellentesque ut enim felis. Duis ornare dictum odio. Nam aliquet pharetra tortor, eget aliquet eros convallis id. Duis elit arcu, feugiat sed neque eu, congue lobortis nulla. Aliquam nec maximus nunc.
-
 
 ## 802.11ax (2020)
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent facilisis odio ac nibh placerat, vitae aliquet mauris venenatis. Nunc odio urna, vestibulum et congue vitae, malesuada et mi. Proin eu suscipit diam. Phasellus egestas eu felis nec tristique. Curabitur pharetra vel ligula id imperdiet. In nulla eros, finibus vel nunc a, bibendum dapibus nibh. Nulla vitae massa id neque blandit tincidunt. Vestibulum tempor, nunc vel gravida finibus, neque ipsum tristique lectus, ac faucibus est est aliquet urna. Pellentesque consequat ut tellus non accumsan. Curabitur pharetra at enim eu fringilla. Quisque porttitor leo lectus, lobortis posuere justo porttitor eget. Aliquam a mi id turpis convallis pharetra et eget orci.
 
-
 ## 802.11be (Present)
 Pellentesque sed maximus odio, sit amet porttitor velit. In hac habitasse platea dictumst. Donec quis pellentesque nulla, ac tempus velit. Vivamus blandit urna eget turpis faucibus elementum. Suspendisse blandit risus orci, eu pharetra augue elementum vitae. Quisque urna leo, facilisis et nisl ut, iaculis pharetra magna. Sed sit amet suscipit nisi. Praesent sollicitudin purus in dui molestie venenatis. Proin vel arcu ac erat varius porta eget sit amet eros. Suspendisse bibendum hendrerit dolor a bibendum. Vestibulum eget dui enim. Donec id facilisis ante.
-
