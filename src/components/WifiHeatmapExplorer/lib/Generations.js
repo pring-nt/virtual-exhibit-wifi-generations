@@ -82,7 +82,7 @@ export const GENERATIONS = [
         year:            '2021',
         maxStrength:     120,
         frequencyBand:   'dual',
-        wallPenetration: 0.6,
+        wallPenetration: 1.3,
         description:     'Fresh, uncongested 6 GHz spectrum and the best peak speeds — but the highest frequency means the worst wall penetration of any generation here.',
     },
 ];
