@@ -18,7 +18,9 @@ Dating back to 1980 in IBM's Rueschlikon Laboratory in Zurich, Switzerland, earl
 
 In 1997, the IEEE released its first legacy 802.11 standard. By 1999, the Wi-Fi Alliance was established alongside the release of 802.11b — the first version deployed worldwide for commercial use, operating on the 2.4 GHz band. From there, each new generation brought better reliability, speeds, and range: from the 11 Mbps ceiling of 802.11b to the multi-gigabit capabilities of Wi-Fi 7 today.
 
-It may not be hyperbolic to say that Wi-Fi and the advent of wireless technology have helped shape our world into a more interconnected and communicative one.
+<div className="callout">
+    It may not be hyperbolic to say that Wi-Fi and the advent of wireless technology have helped shape our world into a more interconnected and communicative one.
+</div>
 
 ---
 
@@ -40,11 +42,48 @@ It may not be hyperbolic to say that Wi-Fi and the advent of wireless technology
 
 One of the most important — and most misunderstood — factors in Wi-Fi performance is the frequency band a standard operates on. Every major shift in Wi-Fi history involves a deliberate tradeoff between three bands.
 
-**2.4 GHz** is the oldest and most widely used band. Its longer wavelength gives it better range and wall penetration than higher frequencies, making it the go-to choice in early standards. The downside is congestion: the 2.4 GHz band is shared with Bluetooth devices, microwave ovens, and neighboring networks, and only offers three non-overlapping channels. In dense environments, interference is a constant problem.
+<div className="freq-panels">
 
-**5 GHz** trades range and penetration for speed and breathing room. Its shorter wavelength struggles more with walls and distance, but it offers far more non-overlapping channels (up to 23) and far less interference from non-Wi-Fi devices. Standards that moved to or added 5 GHz did so primarily to escape the crowded 2.4 GHz space and unlock higher throughputs.
+    <div className="freq-panel freq-panel--24" data-ghz="2.4">
 
-**6 GHz**, introduced with Wi-Fi 6E, is the newest and least congested band. It opens up to 1,200 MHz of additional spectrum — more than the 2.4 GHz and 5 GHz bands combined. The tradeoff is the worst range and wall penetration of the three, making it most effective in open spaces or short-range, high-demand scenarios.
+        #### 2.4 GHz
+
+        The oldest and most widely-used band. Its longer wavelength gives it the best range and wall penetration of the three — but it pays for this with congestion. Shared with Bluetooth, microwaves, and neighboring networks, it offers only three non-overlapping channels.
+
+        - Best range and wall penetration
+        - Only 3 non-overlapping channels
+        - High interference in dense environments
+        - Used in: Wi-Fi 1, 3, 4, 6
+
+    </div>
+
+    <div className="freq-panel freq-panel--5" data-ghz="5">
+
+        #### 5 GHz
+
+        Trades range and penetration for speed and breathing room. Its shorter wavelength struggles more with walls and distance, but it offers far more non-overlapping channels and far less interference from non-Wi-Fi devices.
+
+        - Moderate range, struggles with walls
+        - Up to 23 non-overlapping channels
+        - Low interference, higher throughput
+        - Used in: Wi-Fi 2, 4, 5, 6
+
+    </div>
+
+    <div className="freq-panel freq-panel--6" data-ghz="6">
+
+        #### 6 GHz
+
+        Introduced with Wi-Fi 6E. Opens up to 1,200 MHz of fresh, uncongested spectrum — more than the other two bands combined. The tradeoff is the worst range and wall penetration of the three.
+
+        - Shortest range, worst wall penetration
+        - Up to 59 non-overlapping channels
+        - Virtually zero legacy interference
+        - Used in: Wi-Fi 6E, 7
+
+    </div>
+
+</div>
 
 Understanding these tradeoffs is key to understanding why each Wi-Fi generation made the design choices it did.
 
@@ -52,57 +91,128 @@ Understanding these tradeoffs is key to understanding why each Wi-Fi generation 
 
 ## The Standards
 
-### 802.11b — Wi-Fi 1 (1999)
+<div className="standard-entry">
 
-The first Wi-Fi standard released for worldwide commercial use. 802.11b operates on the 2.4 GHz ISM band with a 22 MHz channel bandwidth, using Complementary Code Keying (CCK) — a complex M-ary orthogonal coding scheme. Its maximum theoretical throughput is 11 Mbps, with fallbacks to 5.5, 2, and 1 Mbps under poor signal conditions.
+    ### 802.11b — Wi-Fi 1
 
-In practice, real-world throughput rarely exceeded 4–5 Mbps. The 2.4 GHz band, shared with other consumer electronics, caused persistent interference issues that made performance in populated environments unreliable.
+    <div className="standard-meta">
+        <span className="badge badge-year">1999</span>
+        <span className="badge badge-24">2.4 GHz</span>
+        <span className="badge badge-speed">11 Mbps max</span>
+    </div>
 
-### 802.11a — Wi-Fi 2 (1999)
+    The first Wi-Fi standard released for worldwide commercial use. 802.11b operates on the 2.4 GHz ISM band with a 22 MHz channel bandwidth, using Complementary Code Keying (CCK) — a complex M-ary orthogonal coding scheme. Its maximum theoretical throughput is 11 Mbps, with fallbacks to 5.5, 2, and 1 Mbps under poor signal conditions.
 
-Released the same year as 802.11b but far less widely adopted, 802.11a operated on the 5 GHz band using OFDM (Orthogonal Frequency Division Multiplexing), achieving a theoretical maximum of 54 Mbps. The higher frequency offered less interference and more bandwidth, with typical real-world speeds of around 20–25 Mbps.
+    In practice, real-world throughput rarely exceeded 4–5 Mbps. The 2.4 GHz band, shared with other consumer electronics, caused persistent interference issues that made performance in populated environments unreliable.
 
-The tradeoff was significant: shorter range and notably worse wall penetration compared to 802.11b. Combined with higher hardware costs and incompatibility with the more popular 802.11b ecosystem, 802.11a saw limited consumer adoption.
+</div>
 
-### 802.11g — Wi-Fi 3 (2003)
+<div className="standard-entry">
 
-802.11g took the best of both predecessors: it adopted OFDM from 802.11a for higher throughput (54 Mbps theoretical) while staying on the 2.4 GHz band for broader range and backward compatibility with 802.11b hardware. Real-world speeds typically landed between 20–25 Mbps.
+    ### 802.11a — Wi-Fi 2
 
-It became the dominant standard for home and office use throughout the mid-2000s, largely because it offered a meaningful speed improvement without forcing users to replace existing 802.11b hardware.
+    <div className="standard-meta">
+        <span className="badge badge-year">1999</span>
+        <span className="badge badge-5">5 GHz</span>
+        <span className="badge badge-speed">54 Mbps max</span>
+    </div>
 
-### 802.11n — Wi-Fi 4 (2009)
+    Released the same year as 802.11b but far less widely adopted, 802.11a operated on the 5 GHz band using OFDM (Orthogonal Frequency Division Multiplexing), achieving a theoretical maximum of 54 Mbps. The higher frequency offered less interference and more bandwidth, with typical real-world speeds of around 20–25 Mbps.
 
-The first standard considered genuinely capable for demanding commercial environments. 802.11n introduced MIMO (Multiple Input Multiple Output), using multiple antennas on both the transmitter and receiver to send and receive data streams simultaneously. Combined with support for both 2.4 GHz and 5 GHz bands and optional 40 MHz channel bonding, the theoretical maximum reached 600 Mbps.
+    The tradeoff was significant: shorter range and notably worse wall penetration compared to 802.11b. Combined with higher hardware costs and incompatibility with the 802.11b ecosystem, 802.11a saw limited consumer adoption.
 
-In practice, most consumer hardware delivered 50–150 Mbps, depending on the number of spatial streams and band in use. MIMO was a foundational shift — every subsequent generation has built upon it.
+</div>
 
-### 802.11ac — Wi-Fi 5 (2013)
+<div className="standard-entry">
 
-The first Wi-Fi standard to deliver gigabit-class speeds, 802.11ac operates exclusively on the 5 GHz band. It expanded channel widths to 80 MHz (optionally 160 MHz) and introduced Multi-User MIMO (MU-MIMO), allowing a router to communicate with multiple clients simultaneously rather than serving them in sequence.
+    ### 802.11g — Wi-Fi 3
 
-Theoretical maximum throughput reached 3.5 Gbps across multiple streams; typical real-world performance for a single device ranged from 200–500 Mbps under good conditions. The 5 GHz-only approach kept speeds high but limited range relative to dual-band alternatives.
+    <div className="standard-meta">
+        <span className="badge badge-year">2003</span>
+        <span className="badge badge-24">2.4 GHz</span>
+        <span className="badge badge-speed">54 Mbps max</span>
+    </div>
 
-### 802.11ax — Wi-Fi 6 and 6E (2020)
+    802.11g took the best of both predecessors: it adopted OFDM from 802.11a for higher throughput (54 Mbps theoretical) while staying on the 2.4 GHz band for broader range and backward compatibility with 802.11b hardware. Real-world speeds typically landed between 20–25 Mbps.
 
-802.11ax introduced OFDMA (Orthogonal Frequency Division Multiple Access), which allows a single transmission to carry data for multiple clients at once by subdividing channels into smaller resource units. Combined with reduced subcarrier spacing (78.125 kHz), schedule-based resource allocation, and improved MU-MIMO, Wi-Fi 6 is purpose-built for dense environments.
+    It became the dominant standard for home and office use throughout the mid-2000s, largely because it offered a meaningful speed improvement without forcing users to replace existing 802.11b hardware.
 
-Its extension, Wi-Fi 6E, opened the 6 GHz band — adding up to 1,200 MHz of fresh, uncongested spectrum. Theoretical maximum sits at 9.6 Gbps; real-world speeds of 500–900 Mbps are common on well-configured networks, with the 6 GHz band offering the highest throughput in close range.
+</div>
 
-### 802.11be — Wi-Fi 7 (Present)
+<div className="standard-entry">
 
-The current frontier. Wi-Fi 7 is backward compatible with Wi-Fi 6E and operates across all three bands simultaneously using Multi-Link Operation (MLO) — allowing a single device to transmit and receive across multiple bands and channels at the same time, reducing latency and increasing effective throughput.
+    ### 802.11n — Wi-Fi 4
 
-Other introductions include 320 MHz channel widths, 4096-QAM modulation (up from 1024-QAM in Wi-Fi 6), and theoretical speeds up to 46 Gbps. Real-world performance data is still emerging as hardware deployments ramp up, but early testing shows substantial gains in both throughput and latency over Wi-Fi 6E.
+    <div className="standard-meta">
+        <span className="badge badge-year">2009</span>
+        <span className="badge badge-dual">Dual-band</span>
+        <span className="badge badge-speed">600 Mbps max</span>
+    </div>
+
+    The first standard considered genuinely capable for demanding commercial environments. 802.11n introduced MIMO (Multiple Input Multiple Output), using multiple antennas on both the transmitter and receiver to send and receive data streams simultaneously. Combined with support for both 2.4 GHz and 5 GHz bands and optional 40 MHz channel bonding, the theoretical maximum reached 600 Mbps.
+
+    In practice, most consumer hardware delivered 50–150 Mbps, depending on the number of spatial streams and band in use. MIMO was a foundational shift — every subsequent generation has built upon it.
+
+</div>
+
+<div className="standard-entry">
+
+    ### 802.11ac — Wi-Fi 5
+
+    <div className="standard-meta">
+        <span className="badge badge-year">2013</span>
+        <span className="badge badge-5">5 GHz</span>
+        <span className="badge badge-speed">3.5 Gbps max</span>
+    </div>
+
+    The first Wi-Fi standard to deliver gigabit-className speeds, 802.11ac operates exclusively on the 5 GHz band. It expanded channel widths to 80 MHz (optionally 160 MHz) and introduced Multi-User MIMO (MU-MIMO), allowing a router to communicate with multiple clients simultaneously rather than serving them in sequence.
+
+    Theoretical maximum throughput reached 3.5 Gbps across multiple streams; typical real-world performance for a single device ranged from 200–500 Mbps under good conditions. The 5 GHz-only approach kept speeds high but limited range relative to dual-band alternatives.
+
+</div>
+
+<div className="standard-entry">
+
+    ### 802.11ax — Wi-Fi 6 and 6E
+
+    <div className="standard-meta">
+        <span className="badge badge-year">2019 / 2021</span>
+        <span className="badge badge-dual">Dual-band</span>
+        <span className="badge badge-6">+ 6 GHz</span>
+        <span className="badge badge-speed">9.6 Gbps max</span>
+    </div>
+
+    802.11ax introduced OFDMA (Orthogonal Frequency Division Multiple Access), which allows a single transmission to carry data for multiple clients at once by subdividing channels into smaller resource units. Combined with reduced subcarrier spacing (78.125 kHz), schedule-based resource allocation, and improved MU-MIMO, Wi-Fi 6 is purpose-built for dense environments.
+
+    Its extension, Wi-Fi 6E, opened the 6 GHz band — adding up to 1,200 MHz of fresh, uncongested spectrum. Theoretical maximum sits at 9.6 Gbps; real-world speeds of 500–900 Mbps are common on well-configured networks, with the 6 GHz band offering the highest throughput in close range.
+
+</div>
+
+<div className="standard-entry">
+
+    ### 802.11be — Wi-Fi 7
+
+    <div className="standard-meta">
+        <span className="badge badge-year">Present</span>
+        <span className="badge badge-dual">Tri-band</span>
+        <span className="badge badge-speed">46 Gbps max</span>
+    </div>
+
+    The current frontier. Wi-Fi 7 is backward compatible with Wi-Fi 6E and operates across all three bands simultaneously using Multi-Link Operation (MLO) — allowing a single device to transmit and receive across multiple bands and channels at the same time, reducing latency and increasing effective throughput.
+
+    Other introductions include 320 MHz channel widths, 4096-QAM modulation (up from 1024-QAM in Wi-Fi 6), and theoretical speeds up to 46 Gbps. Real-world performance data is still emerging as hardware deployments ramp up, but early testing shows substantial gains in both throughput and latency over Wi-Fi 6E.
+
+</div>
 
 ---
 
 ## See It in Action
 
-The simulator below lets you paint a custom floor plan and compare how each generation's signal propagates through different wall materials. Draw walls using the toolbar, position the router, then switch to heatmap mode to see coverage differences across generations — particularly how wall penetration and range improve from 802.11b through to Wi-Fi 6E. Pay attention to how 5 GHz generations (Wi-Fi 2 and Wi-Fi 5) trade range for speed compared to their 2.4 GHz counterparts.
+<div className="callout">
+    Paint a floor plan below, position the router, then switch to heatmap mode to compare signal coverage across generations. Pay attention to how <strong>5 GHz generations (Wi-Fi 2 and Wi-Fi 5)</strong> sacrifice range for speed, and how newer generations maintain stronger coverage through the same walls.
+</div>
 
-*The simulator covers Wi-Fi 1 through Wi-Fi 6E. Wi-Fi 7 (802.11be) behavior is not yet modeled.*
-
-*Grid ratio: 1 cell = 1 meter, so the grid represents a 40m × 30m space*
+*The simulator covers Wi-Fi 1 through Wi-Fi 6E. Wi-Fi 7 (802.11be) is not yet modeled. Grid ratio: 1 cell = 1 meter (40 × 30 m space).*
 
 <WifiHeatmapExplorer client:only="react" />
 
@@ -110,12 +220,14 @@ The simulator below lets you paint a custom floor plan and compare how each gene
 
 ## References
 
-Admin. (2017, May 18). *The History of WiFi: 1971 To Today*. CableFree. [Available at CableFree](https://www.cablefree.net/history-of-wifi-technology/)
+<div className="references">
 
-Links, C. (2022, May 24). *The Evolution of Wi-Fi networks: From IEEE 802.11 to Wi-Fi 6E*. Wevolver. [Available at Wevolver](https://www.wevolver.com/article/the-evolution-of-wi-fi-networks-from-ieee-80211-to-wi-fi-6e)
+    Admin. (2017, May 18). *The History of WiFi: 1971 To Today*. CableFree. [Available at CableFree](https://www.cablefree.net/history-of-wifi-technology/)
 
-Pahlavan, K., & Krishnamurthy, P. (2020). *Evolution and Impact of Wi-Fi Technology and Applications: A Historical Perspective*. International Journal of Wireless Information Networks, 28. [Crossref DOI](https://doi.org/10.1007/s10776-020-00501-8)
+    Links, C. (2022, May 24). *The Evolution of Wi-Fi networks: From IEEE 802.11 to Wi-Fi 6E*. Wevolver. [Available at Wevolver](https://www.wevolver.com/article/the-evolution-of-wi-fi-networks-from-ieee-80211-to-wi-fi-6e)
 
-Thamer Hamzah Adrees; Mahmoud Saleh Al-Muzaini; Waleed Saleh Al-Shemaimry; Abdullah Abdulaziz Al-Ghanim. *The Evolution and Impact of Wi-Fi Technology.* Volume. 9 Issue.11, November-2024 International Journal of Innovative Science and Research Technology (IJISRT), 2472-2473, [Crossref DOI](https://doi.org/10.5281/zenodo.14379488)
+    Pahlavan, K., & Krishnamurthy, P. (2020). *Evolution and Impact of Wi-Fi Technology and Applications: A Historical Perspective*. International Journal of Wireless Information Networks, 28. [Crossref DOI](https://doi.org/10.1007/s10776-020-00501-8)
 
----
+    Thamer Hamzah Adrees; Mahmoud Saleh Al-Muzaini; Waleed Saleh Al-Shemaimry; Abdullah Abdulaziz Al-Ghanim. *The Evolution and Impact of Wi-Fi Technology.* Volume 9, Issue 11, November 2024. International Journal of Innovative Science and Research Technology (IJISRT). [Crossref DOI](https://doi.org/10.5281/zenodo.14379488)
+
+</div>
