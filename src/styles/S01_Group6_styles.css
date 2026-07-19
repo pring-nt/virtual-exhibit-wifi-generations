@@ -230,6 +230,66 @@
 .article tbody tr:nth-child(even) td {
     background-color: #faf7f3;
 }
+/* Responsive Table Morphing for Mobile Displays (< 640px) */
+@media (max-width: 639px) {
+    .article table.responsive-table {
+        min-width: 100% !important;
+    }
+
+    /* Hide the primary table header on small screens */
+    .article table.responsive-table thead {
+        display: none;
+    }
+
+    /* Turn rows into separate stacked cards */
+    .article table.responsive-table tbody tr {
+        display: block;
+        border-bottom: 2px solid var(--c-rule);
+        padding: 0.75rem 0;
+    }
+
+    .article table.responsive-table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    /* Make cells flow vertically and align right against label */
+    .article table.responsive-table tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: right;
+        padding: 0.4rem 0.9rem;
+        border-bottom: none;
+        font-size: 0.95em;
+    }
+
+    /* First cell (Standard name) gets styled as the "Card Title" */
+    .article table.responsive-table tbody td:first-child {
+        background: var(--c-ink);
+        color: var(--c-cream) !important;
+        font-size: 1.05em;
+        margin-bottom: 0.5rem;
+        padding: 0.6rem 0.9rem;
+        border-radius: 4px;
+    }
+
+    /* Hide the "Standard" label label on first child since it's now a header badge */
+    .article table.responsive-table tbody td:first-child::before {
+        display: none;
+    }
+
+    /* Inject data-labels as left-aligned bold headers */
+    .article table.responsive-table tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75em;
+        letter-spacing: 0.05em;
+        color: var(--c-muted);
+        margin-right: 1rem;
+        text-align: left;
+    }
+}
 
 .article :not(pre) > code {
     background-color: #f2ede5;
