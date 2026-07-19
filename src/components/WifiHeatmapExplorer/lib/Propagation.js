@@ -10,7 +10,7 @@
  * Uses a max-heap Dijkstra so signal always takes the path of least resistance
  * (e.g. routes around a metal wall if a longer empty-space path yields higher signal).
  *
- * After the main pass, 3 diffusion rounds let signal bleed slightly around corners,
+ * After the main pass, 2 diffusion rounds let signal bleed slightly around corners,
  * which prevents the hard shadow artifacts that pure line-of-sight BFS produces.
  *
  * Output is a Float32Array of normalized values 0.0–1.0, one per cell.
@@ -31,17 +31,9 @@ const DISTANCE_COST = {
     'dual':   2.5,
 };
 
-/** Diffusion step cost — high enough that leakage is subtle, not dominant. */
-const DIFFUSION_STEP_COST = 7;
+const DIFFUSION_STEP_COST = 9;
+const DIFFUSION_PASSES = 2;
 
-/** Number of diffusion passes after the main Dijkstra run. */
-const DIFFUSION_PASSES = 3;
-
-/**
- * 8-directional neighbor offsets.
- * Each entry: [dx, dy, stepDistance]
- * Diagonal steps cost sqrt(2) more than orthogonal.
- */
 const DIRS = [
     [-1,  0, 1],
     [ 1,  0, 1],
@@ -52,11 +44,6 @@ const DIRS = [
     [-1,  1, Math.SQRT2],
     [ 1,  1, Math.SQRT2],
 ];
-
-// ---------------------------------------------------------------------------
-// Max-heap (priority queue) — processes highest-signal cells first
-// Items are [signal, x, y] arrays.
-// ---------------------------------------------------------------------------
 
 class MaxHeap {
     constructor() {
@@ -153,7 +140,7 @@ export function computeHeatmap(grid, gridWidth, gridHeight, router, generation) 
             const nIdx = ny * gridWidth + nx;
             const attenuation = CELL_CONFIGS[grid[nIdx]].attenuation;
             const wallPenalty = attenuation * wallPenetration;
-            const stepCost   = stepCostBase * dist;
+            const stepCost = stepCostBase * dist;
 
             const newSig = sig - stepCost - wallPenalty;
 
@@ -167,21 +154,25 @@ export function computeHeatmap(grid, gridWidth, gridHeight, router, generation) 
         }
     }
 
-    // Diffusion — 4-directional only, with a high step cost.
-    // This lets signal bleed a little around corners without overwhelming the main result.
-    // Without this, you get perfectly sharp "shadow" rectangles behind every wall.
     for (let pass = 0; pass < DIFFUSION_PASSES; pass++) {
-        for (let y = 0; y < gridHeight; y++) {
-            for (let x = 0; x < gridWidth; x++) {
+        const fw = pass % 2 === 0;
+        const y0 = fw ? 0 : gridHeight - 1;
+        const y1 = fw ? gridHeight : -1;
+        const yd = fw ? 1 : -1;
+        const x0 = fw ? 0 : gridWidth - 1;
+        const x1 = fw ? gridWidth : -1;
+        const xd = fw ? 1 : -1;
+
+        for (let y = y0; y !== y1; y += yd) {
+            for (let x = x0; x !== x1; x += xd) {
                 const idx = y * gridWidth + x;
                 if (raw[idx] <= 0) continue;
 
-                for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
-                    const nx = x + dx;
-                    const ny = y + dy;
+                for (const [ddx, ddy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
+                    const nx = x + ddx;
+                    const ny = y + ddy;
                     if (nx < 0 || nx >= gridWidth || ny < 0 || ny >= gridHeight) continue;
-
-                    const nIdx  = ny * gridWidth + nx;
+                    const nIdx = ny * gridWidth + nx;
                     const leaked = raw[idx] - DIFFUSION_STEP_COST;
                     if (leaked > raw[nIdx]) {
                         raw[nIdx] = leaked;
