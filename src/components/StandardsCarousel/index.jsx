@@ -51,7 +51,7 @@ function Dots() {
 
 export default function StandardsCarousel() {
     return (
-        <div className="wifi-explorer">
+        <div className="wifi-carousel">
             <Carousel
                 className="w-full max-w-2xl mx-auto relative"
                 opts={{ align: "start", loop: true }}

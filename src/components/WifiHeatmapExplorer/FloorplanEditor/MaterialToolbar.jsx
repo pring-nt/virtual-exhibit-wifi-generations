@@ -28,9 +28,9 @@ export default function MaterialToolbar({
                                             onViewHeatmap
                                         }) {
     return (
-        <div className="flex flex-wrap items-center justify-between gap-2 w-full min-w-0">
+        <div className="flex flex-col gap-3 w-full min-w-0 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
 
-            <div className="flex flex-wrap items-center gap-1.5 w-full sm:w-auto min-w-0">
+            <div className="grid grid-cols-2 gap-1.5 w-full min-w-0 xs:grid-cols-4 sm:flex sm:items-center sm:w-auto">
                 {MATERIALS.map((config) => {
                     const isActive = state.activeMaterial === config.type && !isRouterSelected;
                     return (
@@ -39,37 +39,40 @@ export default function MaterialToolbar({
                             variant={isActive ? 'default' : 'outline'}
                             size="sm"
                             onClick={() => dispatch({ type: 'SET_MATERIAL', material: config.type })}
-                            className="gap-1.5 flex-1 sm:flex-initial min-w-[70px] text-xs px-2"
+                            className="gap-1.5 w-full justify-center text-xs px-2 h-9 sm:w-auto sm:min-w-[75px]"
                         >
                             <span
                                 className="inline-block w-3 h-3 rounded-sm border border-border shrink-0"
                                 style={{ backgroundColor: config.color }}
                             />
-                            {config.type === CELL_TYPE.EMPTY ? 'Eraser' : config.label}
+                            <span className="truncate">
+                                {config.type === CELL_TYPE.EMPTY ? 'Eraser' : config.label}
+                            </span>
                         </Button>
                     );
                 })}
             </div>
 
-            <div className="flex flex-wrap items-center gap-1.5 w-full sm:w-auto min-w-0">
+            {/* Action Buttons - Fully balanced uniform row on mobile, compact on desktop */}
+            <div className="flex items-center gap-1.5 w-full min-w-0 sm:w-auto">
                 <Button
                     variant={isRouterSelected ? 'default' : 'outline'}
                     size="sm"
                     onClick={onMoveRouter}
-                    className="gap-1.5 flex-initial text-xs whitespace-nowrap"
+                    className="gap-1.5 flex-1 justify-center text-xs whitespace-nowrap h-9 sm:flex-initial"
                 >
                     <Move size={14} className="shrink-0" />
-                    Router
+                    <span>Router</span>
                 </Button>
 
                 <Button
                     variant="outline"
                     size="sm"
                     onClick={onClearAll}
-                    className="gap-1.5 flex-initial text-xs whitespace-nowrap"
+                    className="gap-1.5 flex-1 justify-center text-xs whitespace-nowrap h-9 sm:flex-initial"
                 >
                     <Trash2 size={14} className="shrink-0" />
-                    Clear
+                    <span>Clear</span>
                 </Button>
 
                 {onViewHeatmap && (
@@ -77,10 +80,10 @@ export default function MaterialToolbar({
                         variant="default"
                         size="sm"
                         onClick={onViewHeatmap}
-                        className="gap-1.5 flex-initial text-xs whitespace-nowrap bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm"
+                        className="gap-1.5 flex-[1.2] justify-center text-xs whitespace-nowrap h-9 bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm sm:flex-initial"
                     >
                         <Eye size={14} className="shrink-0" />
-                        View Heatmap
+                        <span>View Heatmap</span>
                     </Button>
                 )}
             </div>

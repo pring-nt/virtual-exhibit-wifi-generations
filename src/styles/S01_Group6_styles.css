@@ -7,50 +7,21 @@
 
 @custom-variant dark (&:is(.dark *));
 
-.wifi-explorer {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.147 0.004 49.3);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.147 0.004 49.3);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.147 0.004 49.3);
-    --primary: oklch(0.214 0.009 43.1);
-    --primary-foreground: oklch(0.986 0.002 67.8);
-    --secondary: oklch(0.96 0.002 17.2);
-    --secondary-foreground: oklch(0.214 0.009 43.1);
-    --muted: oklch(0.96 0.002 17.2);
-    --muted-foreground: oklch(0.547 0.021 43.1);
-    --accent: oklch(0.96 0.002 17.2);
-    --accent-foreground: oklch(0.214 0.009 43.1);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0.005 34.3);
-    --input: oklch(0.922 0.005 34.3);
-    --ring: oklch(0.714 0.014 41.2);
-    --chart-1: oklch(0.868 0.007 39.5);
-    --chart-2: oklch(0.547 0.021 43.1);
-    --chart-3: oklch(0.438 0.017 39.3);
-    --chart-4: oklch(0.367 0.016 35.7);
-    --chart-5: oklch(0.268 0.011 36.5);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.986 0.002 67.8);
-    --sidebar-foreground: oklch(0.147 0.004 49.3);
-    --sidebar-primary: oklch(0.214 0.009 43.1);
-    --sidebar-primary-foreground: oklch(0.986 0.002 67.8);
-    --sidebar-accent: oklch(0.96 0.002 17.2);
-    --sidebar-accent-foreground: oklch(0.214 0.009 43.1);
-    --sidebar-border: oklch(0.922 0.005 34.3);
-    --sidebar-ring: oklch(0.714 0.014 41.2);
+html:has(#wifi-evolution-exhibit) {
+    background: radial-gradient(circle at top right, #0f172a 0%, #020617 100%) !important;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
-.wifi-explorer.dark {
+body:has(#wifi-evolution-exhibit) {
     --background: oklch(0.147 0.004 49.3);
     --foreground: oklch(0.986 0.002 67.8);
     --card: oklch(0.214 0.009 43.1);
     --card-foreground: oklch(0.986 0.002 67.8);
     --popover: oklch(0.214 0.009 43.1);
     --popover-foreground: oklch(0.986 0.002 67.8);
-    --primary: oklch(0.922 0.005 34.3);
-    --primary-foreground: oklch(0.214 0.009 43.1);
+    --primary: oklch(0.78 0.16 205);
+    --primary-foreground: oklch(0.12 0.02 240);
     --secondary: oklch(0.268 0.011 36.5);
     --secondary-foreground: oklch(0.986 0.002 67.8);
     --muted: oklch(0.268 0.011 36.5);
@@ -58,40 +29,38 @@
     --accent: oklch(0.268 0.011 36.5);
     --accent-foreground: oklch(0.986 0.002 67.8);
     --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
+    --border: oklch(1 0 0 / 12%);
     --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.547 0.021 43.1);
-    --chart-1: oklch(0.868 0.007 39.5);
-    --chart-2: oklch(0.547 0.021 43.1);
-    --chart-3: oklch(0.438 0.017 39.3);
-    --chart-4: oklch(0.367 0.016 35.7);
-    --chart-5: oklch(0.268 0.011 36.5);
-    --sidebar: oklch(0.214 0.009 43.1);
-    --sidebar-foreground: oklch(0.986 0.002 67.8);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.986 0.002 67.8);
-    --sidebar-accent: oklch(0.268 0.011 36.5);
-    --sidebar-accent-foreground: oklch(0.986 0.002 67.8);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.547 0.021 43.1);
+    --ring: oklch(0.78 0.16 205);
+    --radius: 0.625rem;
+
+    color: var(--foreground);
+    overflow-x: hidden;
+}
+
+body:has(#wifi-evolution-exhibit) .article,
+body:has(#wifi-evolution-exhibit) .toc,
+body:has(#wifi-evolution-exhibit) .content__titlemeta,
+body:has(#wifi-evolution-exhibit) .header__titleblock {
+    background: rgba(15, 23, 42, 0.65) !important;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(56, 189, 248, 0.2) !important;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.6) !important;
+    color: var(--foreground) !important;
+    max-width: 100%;
+}
+
+body:has(#wifi-evolution-exhibit) .content__titlemeta h1 {
+    color: #ffffff;
+}
+
+body:has(#wifi-evolution-exhibit) .header__titleblock strong {
+    color: #ffffff;
 }
 
 @theme inline {
     --font-sans: 'Noto Sans Variable', sans-serif;
     --font-heading: 'Playfair Display Variable', serif;
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
     --color-ring: var(--ring);
     --color-input: var(--input);
     --color-border: var(--border);
@@ -120,50 +89,48 @@
 }
 
 @layer base {
-    .wifi-explorer * {
-        @apply border-border outline-ring/50;
-    }
-    .wifi-explorer {
-        @apply bg-background text-foreground font-sans;
+    .wifi-explorer, .wifi-carousel {
+        @apply font-sans;
     }
 }
-
 
 .article {
-    --c-ink:        #111008;
-    --c-cream:      #fef9ee;
-    --c-muted:      #6b5f52;
-    --c-rule:       #e2d8cc;
-    --c-amber:      #d97706;
-    --c-amber-pale: #fdf3dc;
-    --c-blue:       #2563eb;
-    --c-blue-pale:  #dbeafe;
-    --c-violet:     #7c3aed;
-    --c-violet-pale:#ede9fe;
-    --c-teal:       #0d9488;
-    --c-teal-pale:  #ccfbf1;
+    --c-ink:        #ffffff;
+    --c-cream:      #0f172a;
+    --c-muted:      #94a3b8;
+    --c-rule:       #334155;
+    --c-amber:      #f59e0b;
+    --c-amber-pale: #78350f;
+    --c-blue:       #3b82f6;
+    --c-blue-pale:  #1e3a8a;
+    --c-violet:     #8b5cf6;
+    --c-violet-pale:#4c1d95;
+    --c-teal:       #14b8a6;
+    --c-teal-pale:  #115e59;
 }
 
-.article p {
+.article p:not(.wifi-explorer *, .wifi-carousel *) {
     line-height: 1.78;
     margin-bottom: 1rem;
+    word-break: break-word;
 }
 
-.article > p:first-of-type {
+.article > p:first-of-type:not(.wifi-explorer *, .wifi-carousel *) {
     font-size: 1.08em;
     color: var(--c-muted);
 }
 
-.article strong {
-    color: var(--c-ink);
+.article strong:not(.wifi-explorer *, .wifi-carousel *) {
+    color: #ffffff;
     font-weight: 600;
 }
 
-.article h2 {
+.article h2:not(.wifi-explorer *, .wifi-carousel *) {
     font-family: 'Playfair Display Variable', serif;
-    background: var(--c-ink);
-    color: var(--c-cream);
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
     padding: 0.6rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 4px;
     margin-top: 3rem;
     margin-bottom: 1.25rem;
@@ -172,14 +139,14 @@
     font-weight: 700;
 }
 
-.article h3 {
+.article h3:not(.wifi-explorer *, .wifi-carousel *) {
     margin-top: 0;
     margin-bottom: 0.375rem;
     font-size: 1.1em;
-    color: var(--c-ink);
+    color: #ffffff;
 }
 
-.article h4 {
+.article h4:not(.wifi-explorer *, .wifi-carousel *) {
     margin-top: 0;
     margin-bottom: 0.5rem;
     font-size: 1em;
@@ -187,14 +154,14 @@
     color: inherit;
 }
 
-.article hr {
+.article hr:not(.wifi-explorer *, .wifi-carousel *) {
     border: none;
     height: 1px;
     background: linear-gradient(to right, transparent, var(--c-rule) 15%, var(--c-rule) 85%, transparent);
     margin: 2.5rem 0;
 }
 
-.article table {
+.article table:not(.wifi-explorer *, .wifi-carousel *) {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.875em;
@@ -204,7 +171,7 @@
     overflow: hidden;
 }
 
-.article thead th {
+.article thead th:not(.wifi-explorer *, .wifi-carousel *) {
     background: var(--c-ink);
     color: var(--c-cream);
     text-align: left;
@@ -216,44 +183,41 @@
     white-space: nowrap;
 }
 
-.article tbody td {
+.article tbody td:not(.wifi-explorer *, .wifi-carousel *) {
     padding: 0.55rem 0.9rem;
     border-bottom: 1px solid var(--c-rule);
     vertical-align: top;
     line-height: 1.5;
 }
 
-.article tbody tr:last-child td {
+.article tbody tr:last-child td:not(.wifi-explorer *, .wifi-carousel *) {
     border-bottom: none;
 }
 
-.article tbody tr:nth-child(even) td {
-    background-color: #faf7f3;
+.article tbody tr:nth-child(even) td:not(.wifi-explorer *, .wifi-carousel *) {
+    background-color: rgba(255, 255, 255, 0.02);
 }
-/* Responsive Table Morphing for Mobile Displays (< 640px) */
+
 @media (max-width: 639px) {
-    .article table.responsive-table {
+    .article table.responsive-table:not(.wifi-explorer *, .wifi-carousel *) {
         min-width: 100% !important;
     }
 
-    /* Hide the primary table header on small screens */
-    .article table.responsive-table thead {
+    .article table.responsive-table thead:not(.wifi-explorer *, .wifi-carousel *) {
         display: none;
     }
 
-    /* Turn rows into separate stacked cards */
-    .article table.responsive-table tbody tr {
+    .article table.responsive-table tbody tr:not(.wifi-explorer *, .wifi-carousel *) {
         display: block;
         border-bottom: 2px solid var(--c-rule);
         padding: 0.75rem 0;
     }
 
-    .article table.responsive-table tbody tr:last-child {
+    .article table.responsive-table tbody tr:last-child:not(.wifi-explorer *, .wifi-carousel *) {
         border-bottom: none;
     }
 
-    /* Make cells flow vertically and align right against label */
-    .article table.responsive-table tbody td {
+    .article table.responsive-table tbody td:not(.wifi-explorer *, .wifi-carousel *) {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -263,8 +227,7 @@
         font-size: 0.95em;
     }
 
-    /* First cell (Standard name) gets styled as the "Card Title" */
-    .article table.responsive-table tbody td:first-child {
+    .article table.responsive-table tbody td:first-child:not(.wifi-explorer *, .wifi-carousel *) {
         background: var(--c-ink);
         color: var(--c-cream) !important;
         font-size: 1.05em;
@@ -273,13 +236,11 @@
         border-radius: 4px;
     }
 
-    /* Hide the "Standard" label label on first child since it's now a header badge */
-    .article table.responsive-table tbody td:first-child::before {
+    .article table.responsive-table tbody td:first-child::before:not(.wifi-explorer *, .wifi-carousel *) {
         display: none;
     }
 
-    /* Inject data-labels as left-aligned bold headers */
-    .article table.responsive-table tbody td::before {
+    .article table.responsive-table tbody td::before:not(.wifi-explorer *, .wifi-carousel *) {
         content: attr(data-label);
         font-weight: 600;
         text-transform: uppercase;
@@ -291,151 +252,173 @@
     }
 }
 
-.article :not(pre) > code {
-    background-color: #f2ede5;
+.article :not(pre) > code:not(.wifi-explorer *, .wifi-carousel *) {
+    background-color: rgba(255, 255, 255, 0.08);
     border: 1px solid var(--c-rule);
     padding: 0.15em 0.4em;
     border-radius: 4px;
     font-size: 0.875em;
+    word-break: break-all;
 }
 
-.article pre {
-    background-color: #f8f4ee;
+.article pre:not(.wifi-explorer *, .wifi-carousel *) {
+    background-color: rgba(0, 0, 0, 0.4);
     border: 1px solid var(--c-rule);
     border-left: 3px solid var(--c-amber);
     border-radius: 4px;
     padding: 1rem 1.25rem;
+    max-width: 100%;
     overflow-x: auto;
-    font-size: 0.875em;
-    line-height: 1.6;
-    margin: 1.25rem 0;
+    -webkit-overflow-scrolling: touch;
 }
 
-.article pre code {
-    background: none;
-    border: none;
-    padding: 0;
-    font-size: inherit;
-}
-
-.callout {
+.callout:not(.wifi-explorer *, .wifi-carousel *) {
     background: var(--c-amber-pale);
     border-left: 3px solid var(--c-amber);
     padding: 0.9rem 1.125rem;
     border-radius: 0 4px 4px 0;
     margin: 1.5rem 0;
-    font-size: 0.95em;
-    line-height: 1.7;
-    color: var(--c-ink);
 }
 
-.callout strong {
-    color: var(--c-amber);
-}
-
-.freq-panels {
+.freq-panels:not(.wifi-explorer *, .wifi-carousel *) {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
-    margin: 1.5rem 0;
 }
 
-.freq-panel {
+.freq-panel:not(.wifi-explorer *, .wifi-carousel *) {
     border: 1px solid var(--c-rule);
     border-top-width: 3px;
     border-radius: 4px;
     padding: 1.1rem 1rem 1.4rem;
-    position: relative;
-    overflow: hidden;
+    background: rgba(255, 255, 255, 0.02);
 }
 
-.freq-panel::after {
-    content: attr(data-ghz);
-    position: absolute;
-    right: -0.25rem;
-    bottom: -1.25rem;
-    font-size: 5.5rem;
-    font-weight: 900;
-    font-family: 'Playfair Display Variable', serif;
-    opacity: 0.06;
-    line-height: 1;
-    pointer-events: none;
-    user-select: none;
-}
+.freq-panel--24:not(.wifi-explorer *, .wifi-carousel *) { border-top-color: var(--c-blue); }
+.freq-panel--24 h4:not(.wifi-explorer *, .wifi-carousel *) { color: var(--c-blue); }
+.freq-panel--5:not(.wifi-explorer *, .wifi-carousel *)  { border-top-color: var(--c-violet); }
+.freq-panel--5  h4:not(.wifi-explorer *, .wifi-carousel *) { color: var(--c-violet); }
+.freq-panel--6:not(.wifi-explorer *, .wifi-carousel *)  { border-top-color: var(--c-teal); }
+.freq-panel--6  h4:not(.wifi-explorer *, .wifi-carousel *) { color: var(--c-teal); }
 
-.freq-panel h4 {
-    font-size: 1.1rem;
-    font-weight: 800;
-    margin-bottom: 0.625rem;
-}
-
-.freq-panel p {
-    font-size: 0.875em;
-    line-height: 1.6;
-    color: var(--c-muted);
-    margin-bottom: 0;
-}
-
-.freq-panel ul {
-    font-size: 0.875em;
-    line-height: 1.6;
-    color: var(--c-muted);
-    padding-left: 1.25rem;
-    margin: 0;
-}
-
-.freq-panel--24 { border-top-color: var(--c-blue); }
-.freq-panel--24 h4 { color: var(--c-blue); }
-
-.freq-panel--5  { border-top-color: var(--c-violet); }
-.freq-panel--5  h4 { color: var(--c-violet); }
-
-.freq-panel--6  { border-top-color: var(--c-teal); }
-.freq-panel--6  h4 { color: var(--c-teal); }
-
-.standard-entry {
-    border: 1px solid var(--c-rule);
-    border-radius: 6px;
-    padding: 1.25rem 1.25rem 1rem;
-    margin-bottom: 1.25rem;
-}
-
-.standard-meta {
-    display: flex;
-    gap: 0.4rem;
-    flex-wrap: wrap;
-    margin-bottom: 0.875rem;
-}
-
-.badge {
+.badge:not(.wifi-explorer *, .wifi-carousel *) {
     display: inline-block;
     font-size: 0.7em;
     font-weight: 700;
     padding: 0.22em 0.6em;
     border-radius: 3px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    line-height: 1.4;
 }
 
-.badge-year   { background: var(--c-ink);         color: var(--c-cream); }
-.badge-24     { background: var(--c-blue-pale);    color: var(--c-blue); }
-.badge-5      { background: var(--c-violet-pale);  color: var(--c-violet); }
-.badge-6      { background: var(--c-teal-pale);    color: var(--c-teal); }
-.badge-dual   { background: #e0e7ff;               color: #4338ca; }
-.badge-speed  { background: #f0fdf4; border: 1px solid #86efac; color: #15803d; }
+.badge-year:not(.wifi-explorer *, .wifi-carousel *)   { background: rgba(255, 255, 255, 0.15); color: #ffffff; }
+.badge-24:not(.wifi-explorer *, .wifi-carousel *)     { background: var(--c-blue-pale);    color: #93c5fd; }
+.badge-5:not(.wifi-explorer *, .wifi-carousel *)      { background: var(--c-violet-pale);  color: #c084fc; }
+.badge-6:not(.wifi-explorer *, .wifi-carousel *)      { background: var(--c-teal-pale);    color: #2dd4bf; }
 
-.references {
+.references:not(.wifi-explorer *, .wifi-carousel *) {
     font-size: 0.875em;
-    line-height: 1.7;
-    color: var(--c-muted);
     border-top: 1px solid var(--c-rule);
     padding-top: 1.5rem;
-    margin-top: 0.5rem;
 }
 
-.references p {
-    margin-bottom: 0.625rem;
-    padding-left: 1.5em;
-    text-indent: -1.5em;
+body:has(#wifi-evolution-exhibit) .toc__item a,
+body:has(#wifi-evolution-exhibit) .toc__item a:link {
+    color: #38bdf8 !important;
+    text-decoration: none;
+}
+
+body:has(#wifi-evolution-exhibit) .toc__item a:visited {
+    color: #7dd3fc !important;
+}
+
+body:has(#wifi-evolution-exhibit) .toc__item a:hover {
+    color: #f0f9ff !important;
+    text-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+}
+
+.wifi-explorer, .wifi-carousel,
+.wifi-explorer h1, .wifi-explorer h2, .wifi-explorer h3, .wifi-explorer h4,
+.wifi-explorer p, .wifi-explorer label, .wifi-explorer span, .wifi-explorer text,
+.wifi-explorer div:not([class*="bg-"]) {
+    color: #f8fafc !important;
+}
+
+.wifi-explorer .text-muted-foreground,
+.wifi-explorer [class*="text-muted"] {
+    color: #94a3b8 !important;
+}
+
+.wifi-explorer button.bg-background,
+.wifi-explorer button[class*="border"],
+.wifi-explorer button[class*="outline"] {
+    background-color: rgba(15, 23, 42, 0.65) !important;
+    border: 1px solid rgba(56, 189, 248, 0.4) !important;
+    color: #38bdf8 !important;
+    border-radius: 0 !important;
+}
+
+.wifi-explorer button.bg-background:hover,
+.wifi-explorer button[class*="border"]:hover,
+.wifi-explorer button[class*="outline"]:hover {
+    background-color: rgba(56, 189, 248, 0.15) !important;
+    color: #ffffff !important;
+}
+
+.wifi-explorer button:not([class*="border"]):not([class*="outline"]):not(.bg-background),
+.wifi-explorer button.bg-primary,
+.wifi-explorer button[class*="bg-primary"] {
+    background-color: #38bdf8 !important;
+    color: #020617 !important;
+    font-weight: 600 !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.wifi-explorer button:not([class*="border"]):not([class*="outline"]):not(.bg-background):hover,
+.wifi-explorer button.bg-primary:hover {
+    background-color: #7dd3fc !important;
+}
+
+.wifi-explorer div[role="tablist"],
+.wifi-explorer [class*="bg-muted"] {
+    background-color: rgba(15, 23, 42, 0.5) !important;
+    border: 1px solid rgba(56, 189, 248, 0.2) !important;
+    border-radius: 0 !important;
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100% !important;
+}
+
+.wifi-explorer div[role="tablist"]::-webkit-scrollbar {
+    display: none;
+}
+
+.wifi-explorer button[role="tab"] {
+    color: #94a3b8 !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    transition: all 0.2s ease-in-out !important;
+    flex-shrink: 0 !important;
+}
+
+.wifi-explorer button[role="tab"]:hover {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.wifi-explorer button[role="tab"][data-state="active"],
+.wifi-explorer button[role="tab"][aria-selected="true"] {
+    background-color: #38bdf8 !important;
+    color: #020617 !important;
+    font-weight: 600 !important;
+    border-radius: 0 !important;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3) !important;
+}
+
+.wifi-explorer, .wifi-carousel {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
 }
