@@ -15,6 +15,7 @@
 
 ## Table of Contents
 
+- [Quick Start & Local Setup](#quick-start--local-setup)
 - [Incremental Development Log](#incremental-development-log)
   - [What Was Built](#what-was-built)
   - [Aha Moments](#aha-moments)
@@ -34,6 +35,26 @@
   - [UI Components & Tone](#ui-components--tone)
 - [Interactive Element Design](#interactive-element-design)
 
+---
+## Quick Start & Local Setup
+
+To evaluate the interactive exhibit and Wi-Fi heatmap simulation locally, clone the repository and run the Astro development server:
+
+```bash
+# Clone the repository
+git clone <repository-url>
+
+# Navigate into the project directory
+cd <project-directory>
+
+# Install dependencies
+npm install
+
+# Start the local development server
+npm run dev
+```
+Once the server initializes, open your browser and navigate to http://localhost:4321/wifi-evolution to view the
+full exhibit and interact with the floor plan simulator.
 ---
 
 ## Incremental Development Log
@@ -63,6 +84,8 @@ src/
 │   │   ├── card.tsx
 │   │   ├── carousel.tsx
 │   │   └── tabs.tsx
+│   ├── WifiComparison/                <- Wifi generation comparator
+│   │   └── index.jsx
 │   ├── WifiHeatmapExplorer/           <- Interactive signal simulator engine
 │   │   ├── FloorplanEditor/
 │   │   │   ├── index.jsx              <- Canvas space interaction & drawing logic
@@ -171,35 +194,58 @@ The exhibit covers the evolution of Wi-Fi standards over the decades, from the o
 
 | Standard | Year | Also Known As | Key Highlights |
 | --- | --- | --- | --- |
-| 802.11b | 1999 | Wi-Fi 1 | 2.4 GHz, 11 Mbps max, CCK modulation |
-| 802.11a | 1999 | Wi-Fi 2 | 5 GHz, 54 Mbps, OFDM |
-| 802.11g | 2003 | Wi-Fi 3 | 2.4 GHz, 54 Mbps, OFDM, backward compatible with 802.11b |
-| 802.11n | 2009 | Wi-Fi 4 | Dual-band (2.4 + 5 GHz), MIMO introduced |
-| 802.11ac | 2013 | Wi-Fi 5 | 5 GHz, gigabit speeds, MU-MIMO |
-| 802.11ax | 2019 | Wi-Fi 6 | Dual-band, OFDMA, reduced subcarrier spacing, scheduled resource allocation |
-| 802.11ax (6 GHz) | 2021 | Wi-Fi 6E | Adds 6 GHz band, freshest spectrum, worst wall penetration |
-| 802.11be | Present | Wi-Fi 7 | Up to 46 Gbps, 320 MHz channels, Multi-Link Operation |
+| 802.11b | 1999 | Wi-Fi 1 | **2.4 GHz**, **11 Mbps** max, CCK modulation |
+| 802.11a | 1999 | Wi-Fi 2 | **5 GHz**, **54 Mbps**, OFDM |
+| 802.11g | 2003 | Wi-Fi 3 | **2.4 GHz**, **54 Mbps**, OFDM, backward compatible with 802.11b |
+| 802.11n | 2009 | Wi-Fi 4 | Dual-band (**2.4 + 5 GHz**), **600 Mbps**, MIMO introduced |
+| 802.11ac | 2013 | Wi-Fi 5 | **5 GHz**, **3.5 Gbps** max, MU-MIMO |
+| 802.11ax | 2019 | Wi-Fi 6 | Dual-band (**2.4 + 5 GHz**), **9.6 Gbps** max, OFDMA, reduced subcarrier spacing |
+| 802.11ax (6 GHz) | 2021 | Wi-Fi 6E | Adds **6 GHz** band, freshest spectrum, worst wall penetration |
+| 802.11be | Present | Wi-Fi 7 | Up to **46 Gbps**, **320 MHz** channels, Multi-Link Operation |
 
-#### 802.11b (1999)
-Also known as Wi-Fi 1, it operates on an unlicensed ISM frequency with a channel bandwidth of 22 MHz, with a maximum theoretical output of 11 Mbps and a fallback of 1-2 Mbps. It used complex M-Ary orthogonal coding known as Complementary Code Keying (CCK). It was considered ineffective because other wireless methods of the time shared the same range and caused interference in the Wi-Fi signals.
+#### 802.11b (1999) - Wi-Fi 1
+Operates on an unlicensed ISM frequency with a channel bandwidth of 22 MHz, delivering a maximum theoretical output of 
+11 Mbps with a fallback of 1–2 Mbps using Complementary Code Keying (CCK). Although ratified concurrently with 802.11a 
+by the IEEE in 1999, 802.11b hit the commercial market first—earning the retroactively applied "Wi-Fi 1" moniker—because
+2.4 GHz silicon transceivers were significantly cheaper and easier to manufacture at scale than 5 GHz hardware.
 
-#### 802.11a (1999)
-Unlike the 802.11b, this one operated on the 5 GHz band using OFDM (Orthogonal Frequency Division Multiplexing), offering speeds up to 54 Mbps. Although faster than 802.11b, it has a shorter range and less wall penetration.
+#### 802.11a (1999) - Wi-Fi 2
+Operates on the 5 GHz band using OFDM (Orthogonal Frequency Division Multiplexing), offering speeds up to 54 Mbps. 
+Ratified alongside 802.11b in 1999, 802.11a is designated "Wi-Fi 2" because its more expensive and complex 5 GHz 
+transceivers delayed widespread commercial adoption until after 802.11b had already established market dominance. 
+While faster than 802.11b, its higher frequency resulted in a shorter effective range and weaker obstacle penetration.
 
-#### 802.11g (2003)
-Used the same OFDM tech as 802.11a, but combined both of the better qualities of 802.11a and 802.11b, offering higher speeds with broader range and backward compatibility with 802.11b.
+#### 802.11g (2003) - Wi-Fi 3
+Used the same OFDM technology as 802.11a while returning to the 2.4 GHz band, combining the higher 54 Mbps speeds of 
+802.11a with the broader range and wall penetration of 802.11b while maintaining full backward compatibility with Wi-Fi 
+1 hardware.
 
-#### 802.11n (2009)
-First standard considered genuinely capable for demanding commercial environments. It combined both the 2.4 GHz and 5 GHz bands of 802.11a and 802.11b while introducing MIMO (Multiple Input Multiple Output).
+#### 802.11n (2009) - Wi-Fi 4
+The first standard considered genuinely capable for demanding commercial environments. It introduced selectable 
+dual-band operation across both 2.4 GHz and 5 GHz while implementing MIMO (Multiple Input Multiple Output) antenna 
+architecture to boost maximum data rates up to 600 Mbps.
 
-#### 802.11ac (2013)
-First Wi-Fi standard to provide gigabit speeds per second. Operated on the 5 GHz band and introduced wider channels and Multi-User MIMO.
+#### 802.11ac (2013) - Wi-Fi 5
+The first Wi-Fi standard to break the gigabit barrier, delivering theoretical speeds up to 3.5 Gbps. Operating 
+exclusively on the wider 5 GHz band, it introduced wider channel bandwidths (up to 160 MHz) and Multi-User MIMO 
+(MU-MIMO) for simultaneous downstream transmission to multiple clients.
 
-#### 802.11ax - Wi-Fi 6 (2019) and Wi-Fi 6E (2021)
-Wi-Fi 6 introduced dual-band support across both 2.4 GHz and 5 GHz, OFDMA, reduced subcarrier spacing (78.125 kHz), and schedule-based resource allocation. Wi-Fi 6E extended this to the 6 GHz band, adding up to 1,200 MHz of fresh, uncongested spectrum.
+#### 802.11ax (2019) - Wi-Fi 6
+Introduced dual-band support across both 2.4 GHz and 5 GHz, utilizing Orthogonal Frequency Division Multiple Access 
+(OFDMA), tighter subcarrier spacing (78.125 kHz), and schedule-based resource allocation (Target Wake Time) to massively
+increase efficiency and reduce latency in dense client environments.
 
-#### 802.11be (Present)
-Also known as Wi-Fi 7, it is backwards compatible with Wi-Fi 6E, uses OFDMA, operates across all three bands (2.4, 5, and 6 GHz), supports up to 46 Gbps, introduces 320 MHz channels, and Multi-Link Operation (MLO).
+#### 802.11ax (2021) - Wi-Fi 6E
+While sharing the underlying 802.11ax protocol with Wi-Fi 6, Wi-Fi 6E represents a major hardware leap by extending 
+operations into the newly opened 6 GHz frequency band. This provides up to 1,200 MHz of fresh, uncongested spectrum 
+free from legacy device interference. However, as demonstrated in our interactive simulator, higher-frequency 
+wavelengths suffer from rapid free-space path loss and severe wall attenuation, making 6E the standard with the lowest 
+obstacle penetration capability in our model.
+
+#### 802.11be (Present) - Wi-Fi 7
+Fully backward compatible with previous standards, Wi-Fi 7 operates across all three bands (2.4, 5, and 6 GHz), supports
+theoretical data rates up to 46 Gbps, introduces ultra-wide 320 MHz channels, and implements Multi-Link Operation (MLO) 
+allowing devices to simultaneously send and receive data across multiple frequency bands.
 
 ---
 
@@ -256,9 +302,18 @@ A router marker is displayed on the grid. Users click the router (or the Router 
 
 **Heatmap Mode**
 
-Clicking "View Heatmap" precomputes signal heatmaps for all seven generations simultaneously using a Dijkstra-based propagation algorithm. Signal at each cell is calculated as:
+Clicking "View Heatmap" precomputes signal heatmaps for all seven generations simultaneously using a max-heap Dijkstra propagation algorithm. Rather than forcing a simple straight-line Euclidean falloff, the engine dynamically calculates the path of least resistance—allowing signals to realistically route around heavy obstacles like metal appliances if doing so preserves more dBm than punching through them. Signal strength along any evaluated trajectory is calculated as:
 
-signal = maxStrength - (distanceCost x distance) - sum(wallAttenuation x wallPenetration)
+$$\text{Signal}_{\text{raw}} = S_{\max} - (C_d \cdot d_{\text{path}}) - \sum_{i=1}^{n} (A_{i} \cdot P_{w})$$
+
+Where $S_{\max}$ is the starting transmission power, $C_d$ is the frequency-band distance decay coefficient, 
+$d_{\text{path}}$ is the **accumulated path distance** from the router along the optimal Dijkstra trajectory, 
+$A_i$ is the material attenuation decibel loss of obstacle $i$ along that path, and $P_w$ is the specific generation's 
+wall penetration capability factor.
+
+After the primary Dijkstra routing pass, a two-pass orthogonal diffusion loop bleeds the remaining signal around sharp 
+corners to eliminate artificial line-of-sight shadow artifacts. The resulting data is then clamped and normalized to a 
+**0.0** to **1.0** scale for canvas color rendering.
 
 
 Switching between generations is an instant cache lookup with no recomputation. Returning to floor plan mode discards the cache.

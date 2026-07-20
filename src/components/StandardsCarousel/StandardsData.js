@@ -10,7 +10,7 @@ export const StandardsData = [
         speed: "11 Mbps",
         range: 95,
         pen: 95,
-        color: "text-[#38bdf8]",
+        color: "text-[#93c5fd]",
         p1: "The first widely adopted commercial standard. It operated on the unlicensed 2.4 GHz ISM band using Complementary Code Keying (CCK) modulation.",
         p2: "While its 11 Mbps theoretical maximum speed is sluggish by today's standards, its 2.4 GHz frequency gave it excellent range and the ability to easily punch through drywall and furniture."
     },
@@ -40,7 +40,7 @@ export const StandardsData = [
         speed: "54 Mbps",
         range: 85,
         pen: 90,
-        color: "text-[#38bdf8]",
+        color: "text-[#93c5fd]",
         p1: "The best of both worlds at the time. It brought the high-speed OFDM modulation of 802.11a over to the crowded but resilient 2.4 GHz band.",
         p2: "Crucially, it maintained backward compatibility with legacy 802.11b hardware, triggering an absolute explosion in consumer wireless router adoption."
     },
@@ -55,7 +55,7 @@ export const StandardsData = [
         speed: "600 Mbps",
         range: 95,
         pen: 85,
-        color: "text-[#2dd4bf]",
+        color: "text-[#a5b4fc]",
         p1: "A monumental leap forward that introduced MIMO (Multiple Input Multiple Output), allowing routers to transmit multiple data streams simultaneously using multiple antennas.",
         p2: "It was also the first standard to officially support dual-band operation, letting devices switch between 2.4 GHz for range and 5 GHz for throughput."
     },
@@ -81,11 +81,11 @@ export const StandardsData = [
             { label: "2019 / 2021", className: "badge-year" },
             { label: "Tri-Band", className: "badge-tri" }
         ],
-        band: "2.4, 5 & 6 GHz",
+        band: "Tri-Band",
         speed: "9.6 Gbps",
         range: 85,
         pen: 75,
-        color: "text-[#f59e0b]",
+        color: "text-[#86efac]",
         p1: "Designed to combat extreme network congestion in stadiums and airports. It replaced OFDM with OFDMA, borrowing cellular scheduling tech to chop channels into smaller, highly efficient sub-carriers.",
         p2: "The subsequent Wi-Fi 6E revision unlocked the massive 6 GHz spectrum, adding up to 1,200 MHz of pristine, interference-free airspace for compatible devices."
     },
@@ -100,7 +100,7 @@ export const StandardsData = [
         speed: "46 Gbps",
         range: 80,
         pen: 70,
-        color: "text-[#f59e0b]",
+        color: "text-[#86efac]",
         p1: "The cutting edge of wireless engineering. It introduces ultra-wide 320 MHz channels and massive 4096-QAM packing to achieve staggering wired-like throughput.",
         p2: "Its marquee feature is Multi-Link Operation (MLO), which allows a device to simultaneously send and receive packets across 2.4 GHz, 5 GHz, and 6 GHz bands at the same time to eliminate latency."
     }

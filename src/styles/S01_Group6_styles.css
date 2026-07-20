@@ -360,18 +360,23 @@ body:has(#wifi-evolution-exhibit) {
 }
 
 body:has(#wifi-evolution-exhibit) .toc__item a,
-body:has(#wifi-evolution-exhibit) .toc__item a:link {
+body:has(#wifi-evolution-exhibit) .toc__item a:link,
+body:has(#wifi-evolution-exhibit) .references a,
+body:has(#wifi-evolution-exhibit) .references a:link {
     color: #38bdf8 !important;
     text-decoration: none;
 }
 
-body:has(#wifi-evolution-exhibit) .toc__item a:visited {
+body:has(#wifi-evolution-exhibit) .toc__item a:visited,
+body:has(#wifi-evolution-exhibit) .references a:visited {
     color: #7dd3fc !important;
 }
 
-body:has(#wifi-evolution-exhibit) .toc__item a:hover {
+body:has(#wifi-evolution-exhibit) .toc__item a:hover,
+body:has(#wifi-evolution-exhibit) .references a:hover {
     color: #f0f9ff !important;
     text-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+    text-decoration: underline;
 }
 
 /* Base text color fallback safely excluding badges, styled text, and outputs */
