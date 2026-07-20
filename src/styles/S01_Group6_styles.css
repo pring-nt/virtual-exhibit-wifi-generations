@@ -493,3 +493,11 @@ body:has(#wifi-evolution-exhibit) [role="dialog"] > button.absolute:hover {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.3);
 }
+
+.wifi-explorer .generation-tabs div[role="tablist"] {
+    flex-wrap: wrap !important;
+    white-space: normal !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    height: auto !important;
+}

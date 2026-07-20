@@ -16,7 +16,7 @@ export default function GenerationSelector({ activeIndex, generations, onSelect 
     const active = generations[activeIndex];
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="generation-tabs">
 
             <Tabs value={String(activeIndex)} onValueChange={(v) => onSelect(Number(v))}>
                 <TabsList className="w-full flex flex-wrap h-auto p-1 gap-1">
