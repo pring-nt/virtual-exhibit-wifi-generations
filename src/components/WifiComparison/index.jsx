@@ -35,29 +35,22 @@ function clampPct(val) {
     return Math.max(Math.min(val, 100), 5);
 }
 
-// Smart string detector guarantees we find matching metrics even if ID schemas vary
-function detectGenKey(id, std) {
-    const str = `${id || ''} ${std?.title || ''} ${std?.id || ''}`.toLowerCase();
-    if (str.includes('be') || str.includes('wifi 7') || str.includes('wi-fi 7')) return '802-11be';
-    if (str.includes('ax') || str.includes('wifi 6') || str.includes('wi-fi 6')) return '802-11ax';
-    if (str.includes('ac') || str.includes('wifi 5') || str.includes('wi-fi 5')) return '802-11ac';
-    if (str.includes('n')  || str.includes('wifi 4') || str.includes('wi-fi 4')) return '802-11n';
-    if (str.includes('g')  || str.includes('wifi 3') || str.includes('wi-fi 3')) return '802-11g';
-    if (str.includes('a')  || str.includes('wifi 2') || str.includes('wi-fi 2')) return '802-11a';
-    return '802-11b';
-}
-
 function getMetrics(id, std) {
-    const key = detectGenKey(id, std);
+    const key = id;
     const fallback = STANDARDS_FALLBACK_METRICS[key] || WIFI7_FALLBACK;
 
     let speed = fallback.speed;
     let range = fallback.range;
     let penetration = fallback.pen;
 
+    const GENERATION_ID_MAP = {
+        '802-11b': 'wifi1', '802-11a': 'wifi2', '802-11g': 'wifi3',
+        '802-11n': 'wifi4', '802-11ac': 'wifi5', '802-11ax': 'wifi6', '802-11be': null,
+    };
+
     // Use actual generation data if available
     if (GENERATIONS && Array.isArray(GENERATIONS)) {
-        const genMatch = GENERATIONS.find(g => (g?.title || '').toLowerCase().includes(key.replace('802-11', '')));
+        const genMatch = GENERATIONS.find(g => g.id === GENERATION_ID_MAP[key]);
         if (genMatch) {
             const cost = DISTANCE_COST[genMatch.frequencyBand] || 2.5;
             range = Math.round((genMatch.maxStrength || 100) / cost);
