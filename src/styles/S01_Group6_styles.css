@@ -459,3 +459,22 @@ body:has(#wifi-evolution-exhibit) .references a:hover {
     width: 100% !important;
     box-sizing: border-box !important;
 }
+
+.wifi-explorer .text-muted-foreground,
+.wifi-carousel .text-muted-foreground,
+.wifi-explorer [class*="text-muted"],
+.wifi-carousel [class*="text-muted"] {
+    color: #94a3b8 !important;
+}
+
+body:has(#wifi-evolution-exhibit) [role="dialog"] > button {
+    background-color: transparent !important;
+    color: #94a3b8 !important;
+    border-radius: 0.375rem !important;
+    transition: all 0.2s ease !important;
+}
+
+body:has(#wifi-evolution-exhibit) [role="dialog"] > button:hover {
+    background-color: rgba(56, 189, 248, 0.15) !important;
+    color: #ffffff !important;
+}
