@@ -204,52 +204,67 @@ body:has(#wifi-evolution-exhibit) {
         min-width: 100% !important;
     }
 
-    .article table.responsive-table thead:not(.wifi-explorer *, .wifi-carousel *) {
+    .article table.responsive-table:not(.wifi-explorer *, .wifi-carousel *) thead {
         display: none;
     }
 
-    .article table.responsive-table tbody tr:not(.wifi-explorer *, .wifi-carousel *) {
+    /* Wrap each mobile row into a neat, self-contained card */
+    .article table.responsive-table:not(.wifi-explorer *, .wifi-carousel *) tbody tr {
         display: block;
-        border-bottom: 2px solid var(--c-rule);
-        padding: 0.75rem 0;
+        border: 1px solid var(--c-rule);
+        border-radius: 6px;
+        margin-bottom: 1rem;
+        background: rgba(255, 255, 255, 0.02);
+        overflow: hidden;
     }
 
-    .article table.responsive-table tbody tr:last-child:not(.wifi-explorer *, .wifi-carousel *) {
-        border-bottom: none;
+    .article table.responsive-table:not(.wifi-explorer *, .wifi-carousel *) tbody tr:last-child {
+        margin-bottom: 0;
     }
 
-    .article table.responsive-table tbody td:not(.wifi-explorer *, .wifi-carousel *) {
+    .article table.responsive-table:not(.wifi-explorer *, .wifi-carousel *) tbody td {
         display: flex;
         justify-content: space-between;
         align-items: center;
         text-align: right;
-        padding: 0.4rem 0.9rem;
-        border-bottom: none;
+        padding: 0.6rem 0.9rem;
+        border-bottom: 1px solid rgba(51, 65, 85, 0.4);
         font-size: 0.95em;
     }
 
-    .article table.responsive-table tbody td:first-child:not(.wifi-explorer *, .wifi-carousel *) {
-        background: var(--c-ink);
-        color: var(--c-cream) !important;
-        font-size: 1.05em;
-        margin-bottom: 0.5rem;
-        padding: 0.6rem 0.9rem;
-        border-radius: 4px;
+    .article table.responsive-table:not(.wifi-explorer *, .wifi-carousel *) tbody td:last-child {
+        border-bottom: none;
     }
 
-    .article table.responsive-table tbody td:first-child::before:not(.wifi-explorer *, .wifi-carousel *) {
+    /* Mobile Card Header: Replaced bright white ink with sleek sky-blue tint */
+    .article table.responsive-table:not(.wifi-explorer *, .wifi-carousel *) tbody td:first-child {
+        background: rgba(56, 189, 248, 0.15) !important;
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 1.05em;
+        margin-bottom: 0;
+        padding: 0.65rem 0.9rem;
+        border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+        border-radius: 0;
+        justify-content: flex-start;
+        text-align: left;
+    }
+
+    /* Fixed syntax: :not() moved BEFORE the ::before pseudo-element */
+    .article table.responsive-table:not(.wifi-explorer *, .wifi-carousel *) tbody td:first-child::before {
         display: none;
     }
 
-    .article table.responsive-table tbody td::before:not(.wifi-explorer *, .wifi-carousel *) {
+    .article table.responsive-table:not(.wifi-explorer *, .wifi-carousel *) tbody td::before {
         content: attr(data-label);
         font-weight: 600;
         text-transform: uppercase;
         font-size: 0.75em;
         letter-spacing: 0.05em;
-        color: var(--c-muted);
+        color: #38bdf8;
         margin-right: 1rem;
         text-align: left;
+        flex-shrink: 0;
     }
 }
 
