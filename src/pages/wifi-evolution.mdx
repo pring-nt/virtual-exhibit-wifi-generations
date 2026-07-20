@@ -12,6 +12,7 @@ import Background from '../components/S01_Group6_Exhibit_Components/ExhibitBackg
 import SummaryTable from '../components/S01_Group6_Exhibit_Components/SummaryTable.astro';
 import FrequencyBands from '../components/S01_Group6_Exhibit_Components/FrequencyBands.astro';
 import SimulatorSection from '../components/S01_Group6_Exhibit_Components/SimulatorSection.astro';
+import WifiComparison from '../components/WifiComparison/index.jsx';
 
 <div id="wifi-evolution-exhibit">
     # The Evolution of WiFi
@@ -33,6 +34,12 @@ import SimulatorSection from '../components/S01_Group6_Exhibit_Components/Simula
     ## The Standards
 
     <StandardsCarousel client:only="react" />
+
+    ---
+
+    ## Compare Generations
+
+    <WifiComparison client:only="react" />
 
     ---
 

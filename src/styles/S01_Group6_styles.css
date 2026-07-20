@@ -94,7 +94,7 @@ body:has(#wifi-evolution-exhibit) .header__titleblock strong {
     }
 }
 
-.article {
+body:has(#wifi-evolution-exhibit) {
     --c-ink:        #ffffff;
     --c-cream:      #0f172a;
     --c-muted:      #94a3b8;
@@ -319,6 +319,8 @@ body:has(#wifi-evolution-exhibit) .header__titleblock strong {
 .freq-panel--6:not(.wifi-explorer *, .wifi-carousel *)  { border-top-color: var(--c-teal); }
 .freq-panel--6  h4:not(.wifi-explorer *, .wifi-carousel *) { color: var(--c-teal); }
 
+.wifi-explorer .badge,
+.wifi-carousel .badge,
 .badge:not(.wifi-explorer *, .wifi-carousel *) {
     display: inline-block;
     font-size: 0.7em;
@@ -327,10 +329,29 @@ body:has(#wifi-evolution-exhibit) .header__titleblock strong {
     border-radius: 3px;
 }
 
-.badge-year:not(.wifi-explorer *, .wifi-carousel *)   { background: rgba(255, 255, 255, 0.15); color: #ffffff; }
-.badge-24:not(.wifi-explorer *, .wifi-carousel *)     { background: var(--c-blue-pale);    color: #93c5fd; }
-.badge-5:not(.wifi-explorer *, .wifi-carousel *)      { background: var(--c-violet-pale);  color: #c084fc; }
-.badge-6:not(.wifi-explorer *, .wifi-carousel *)      { background: var(--c-teal-pale);    color: #2dd4bf; }
+.wifi-explorer .badge-year,
+.wifi-carousel .badge-year,
+.badge-year:not(.wifi-explorer *, .wifi-carousel *) { background: rgba(255,255,255,0.15) !important; color: #ffffff !important; }
+
+.wifi-explorer .badge-24,
+.wifi-carousel .badge-24,
+.badge-24:not(.wifi-explorer *, .wifi-carousel *)   { background: #1e3a8a !important; color: #93c5fd !important; }
+
+.wifi-explorer .badge-5,
+.wifi-carousel .badge-5,
+.badge-5:not(.wifi-explorer *, .wifi-carousel *)    { background: #4c1d95 !important; color: #c084fc !important; }
+
+.wifi-explorer .badge-6,
+.wifi-carousel .badge-6,
+.badge-6:not(.wifi-explorer *, .wifi-carousel *)    { background: #115e59 !important; color: #2dd4bf !important; }
+
+.wifi-explorer .badge-dual,
+.wifi-carousel .badge-dual,
+.badge-dual:not(.wifi-explorer *, .wifi-carousel *) { background: #312e81 !important; color: #a5b4fc !important; }
+
+.wifi-explorer .badge-tri,
+.wifi-carousel .badge-tri,
+.badge-tri:not(.wifi-explorer *, .wifi-carousel *)  { background: #1a2e1a !important; color: #86efac !important; }
 
 .references:not(.wifi-explorer *, .wifi-carousel *) {
     font-size: 0.875em;
@@ -353,10 +374,17 @@ body:has(#wifi-evolution-exhibit) .toc__item a:hover {
     text-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
 }
 
+/* Base text color fallback safely excluding badges, styled text, and outputs */
 .wifi-explorer, .wifi-carousel,
 .wifi-explorer h1, .wifi-explorer h2, .wifi-explorer h3, .wifi-explorer h4,
-.wifi-explorer p, .wifi-explorer label, .wifi-explorer span, .wifi-explorer text,
-.wifi-explorer div:not([class*="bg-"]) {
+.wifi-explorer p, .wifi-explorer label,
+.wifi-explorer span:not([style*="color"]):not([class*="badge"]):not([class*="text-"]),
+.wifi-explorer text,
+.wifi-explorer div:not([class*="bg-"]):not([style*="color"]):not([class*="text-"]),
+.wifi-carousel h1, .wifi-carousel h2, .wifi-carousel h3, .wifi-carousel h4,
+.wifi-carousel p, .wifi-carousel label,
+.wifi-carousel span:not([style*="color"]):not([class*="badge"]):not([class*="text-"]),
+.wifi-carousel div:not([class*="bg-"]):not([style*="color"]):not([class*="text-"]) {
     color: #f8fafc !important;
 }
 
@@ -365,37 +393,7 @@ body:has(#wifi-evolution-exhibit) .toc__item a:hover {
     color: #94a3b8 !important;
 }
 
-.wifi-explorer button.bg-background,
-.wifi-explorer button[class*="border"],
-.wifi-explorer button[class*="outline"] {
-    background-color: rgba(15, 23, 42, 0.65) !important;
-    border: 1px solid rgba(56, 189, 248, 0.4) !important;
-    color: #38bdf8 !important;
-    border-radius: 0 !important;
-}
-
-.wifi-explorer button.bg-background:hover,
-.wifi-explorer button[class*="border"]:hover,
-.wifi-explorer button[class*="outline"]:hover {
-    background-color: rgba(56, 189, 248, 0.15) !important;
-    color: #ffffff !important;
-}
-
-.wifi-explorer button:not([class*="border"]):not([class*="outline"]):not(.bg-background),
-.wifi-explorer button.bg-primary,
-.wifi-explorer button[class*="bg-primary"] {
-    background-color: #38bdf8 !important;
-    color: #020617 !important;
-    font-weight: 600 !important;
-    border: none !important;
-    border-radius: 0 !important;
-}
-
-.wifi-explorer button:not([class*="border"]):not([class*="outline"]):not(.bg-background):hover,
-.wifi-explorer button.bg-primary:hover {
-    background-color: #7dd3fc !important;
-}
-
+/* Tab UI Styling */
 .wifi-explorer div[role="tablist"],
 .wifi-explorer [class*="bg-muted"] {
     background-color: rgba(15, 23, 42, 0.5) !important;
@@ -433,6 +431,22 @@ body:has(#wifi-evolution-exhibit) .toc__item a:hover {
     font-weight: 600 !important;
     border-radius: 0 !important;
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3) !important;
+}
+
+/* Custom Scrollbar Utilities for Static Panel Heights */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .wifi-explorer, .wifi-carousel {
