@@ -79,7 +79,7 @@ function drawHeatmap(ctx, state, cellSize, heatmap) {
 // ---------------------------------------------------------------------------
 
 const LEGEND = [
-    { label: 'No signal', color: '#ffffff',                            border: true },
+    { label: 'No signal', color: '#0d1b2e',                            border: true },
     { label: 'Weak',      color: `rgb(${COLOR_STOPS[0].join(',')})`,  border: false },
     { label: 'Medium',    color: `rgb(${COLOR_STOPS[1].join(',')})`,  border: false },
     { label: 'Strong',    color: `rgb(${COLOR_STOPS[2].join(',')})`,  border: false },
@@ -114,7 +114,7 @@ export default function HeatmapViewer({ state, dispatch, cellSize, generations }
                 ref={canvasRef}
                 width={state.gridWidth  * cellSize}
                 height={state.gridHeight * cellSize}
-                className="block border border-border rounded-sm w-full h-auto aspect-[4/3]"
+                className="block border border-border rounded-sm w-full h-auto aspect-4/3"
             />
 
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -124,7 +124,7 @@ export default function HeatmapViewer({ state, dispatch, cellSize, generations }
                             className="inline-block w-3 h-3 rounded-sm shrink-0"
                             style={{
                                 backgroundColor: color,
-                                border: border ? '1px solid #e2e8f0' : '1px solid transparent',
+                                border: border ? '1px solid #1e293b' : '1px solid transparent',
                             }}
                         />
                         {label}
