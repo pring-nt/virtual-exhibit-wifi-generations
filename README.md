@@ -95,6 +95,7 @@ src/
 │   │   │   ├── GenerationSelector.jsx <- Router target band navigation tabs
 │   │   │   └── index.jsx              <- Signal overlay visual grid assembly
 │   │   ├── lib/
+│   │   │   ├── CanvasUtils.js         <- Canvas outer border and router drawing functions
 │   │   │   ├── CellTypes.js           <- Material types & absorption decibel loss
 │   │   │   ├── Generations.js         <- Operational standard parameters
 │   │   │   └── Propagation.js         <- Dijkstra path calculations & diffusion
