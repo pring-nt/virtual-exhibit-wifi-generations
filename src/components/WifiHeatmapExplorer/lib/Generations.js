@@ -10,7 +10,7 @@
  * @property {number} maxStrength
  * @property {'2.4GHz'|'5GHz'|'dual'} frequencyBand
  * @property {number} wallPenetration
- * @property {string} description   - Short summary shown in heatmap mode
+ * @property {string} description   - Short summary shown below the floor plan editor
  */
 
 /** @type {Generation[]} */

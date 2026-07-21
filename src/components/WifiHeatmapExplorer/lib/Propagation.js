@@ -190,20 +190,3 @@ export function computeHeatmap(grid, gridWidth, gridHeight, router, generation) 
 
     return result;
 }
-
-/**
- * Precompute heatmaps for all generations at once.
- * Called on entry into heatmap mode; results are cached in state.
- *
- * @param {Uint8Array} grid
- * @param {number} gridWidth
- * @param {number} gridHeight
- * @param {{ x: number, y: number }} router
- * @param {import('./Generations.js').Generation[]} generations
- * @returns {Float32Array[]}
- */
-export function computeAllHeatmaps(grid, gridWidth, gridHeight, router, generations) {
-    return generations.map(gen =>
-        computeHeatmap(grid, gridWidth, gridHeight, router, gen)
-    );
-}

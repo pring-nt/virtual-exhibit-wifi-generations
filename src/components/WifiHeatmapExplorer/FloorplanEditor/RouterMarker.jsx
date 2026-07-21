@@ -31,7 +31,7 @@ export default function RouterMarker({ router, isRouterSelected, onDeselect }) {
         <div className="flex items-start sm:items-center gap-2 text-xs px-1 min-h-9 py-1 leading-relaxed">
             <span className="inline-block w-2.5 h-2.5 rounded-full bg-sky-400 shrink-0 mt-1 sm:mt-0" />
             <span className="text-muted-foreground">
-                Router at ({router.x}, {router.y}); tap the router or use the Router button to move it
+                Router at ({router.x}, {router.y}); drag it to move, or use the Router button
             </span>
         </div>
     );

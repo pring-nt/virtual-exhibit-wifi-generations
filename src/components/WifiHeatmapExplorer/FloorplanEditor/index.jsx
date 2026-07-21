@@ -1,7 +1,9 @@
 import { useRef, useEffect, useState } from 'react';
-import { CELL_CONFIGS } from '../lib/CellTypes.js';
+import { CELL_TYPE, CELL_CONFIGS } from '../lib/CellTypes.js';
+import { signalToColor, LEGEND } from '../lib/SignalColor.js';
 import MaterialToolbar from './MaterialToolbar.jsx';
 import RouterMarker from './RouterMarker.jsx';
+import GenerationSelector from './GenerationSelector.jsx';
 import { drawOuterBorder, drawRouter } from '../lib/CanvasUtils.js';
 
 const ROUTER_COLOR    = '#38bdf8';
@@ -9,32 +11,56 @@ const ROUTER_SELECTED = '#f59e0b';
 const ROUTER_OUTLINE  = '#0f172a';
 const GRID_LINE_COLOR = '#1e293b';
 
-function drawFloorplan(ctx, state, cellSize, isRouterSelected) {
+function drawCanvas(ctx, state, cellSize, isRouterSelected, heatmap, showOverlay) {
     const { grid, gridWidth, gridHeight, router } = state;
     const W = gridWidth  * cellSize;
     const H = gridHeight * cellSize;
+    const overlayActive = showOverlay && !!heatmap;
 
     ctx.clearRect(0, 0, W, H);
 
     for (let y = 0; y < gridHeight; y++) {
         for (let x = 0; x < gridWidth; x++) {
-            ctx.fillStyle = CELL_CONFIGS[grid[y * gridWidth + x]].color;
+            const idx = y * gridWidth + x;
+            ctx.fillStyle = overlayActive
+                ? signalToColor(heatmap[idx])
+                : CELL_CONFIGS[grid[idx]].color;
             ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
         }
     }
 
-    ctx.beginPath();
-    for (let x = 0; x <= gridWidth; x++) {
-        ctx.moveTo(x * cellSize + 0.5, 0);
-        ctx.lineTo(x * cellSize + 0.5, H);
+    if (overlayActive) {
+        // walls get drawn translucent + outlined on top so they don't disappear into the heatmap
+        ctx.save();
+        for (let y = 0; y < gridHeight; y++) {
+            for (let x = 0; x < gridWidth; x++) {
+                const cellType = grid[y * gridWidth + x];
+                if (cellType === CELL_TYPE.EMPTY) continue;
+                const config = CELL_CONFIGS[cellType];
+                ctx.globalAlpha = 0.55;
+                ctx.fillStyle   = config.color;
+                ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                ctx.globalAlpha = 1;
+                ctx.strokeStyle = config.edgeColor;
+                ctx.lineWidth   = 0.5;
+                ctx.strokeRect(x * cellSize + 0.5, y * cellSize + 0.5, cellSize - 1, cellSize - 1);
+            }
+        }
+        ctx.restore();
+    } else {
+        ctx.beginPath();
+        for (let x = 0; x <= gridWidth; x++) {
+            ctx.moveTo(x * cellSize + 0.5, 0);
+            ctx.lineTo(x * cellSize + 0.5, H);
+        }
+        for (let y = 0; y <= gridHeight; y++) {
+            ctx.moveTo(0,  y * cellSize + 0.5);
+            ctx.lineTo(W, y * cellSize + 0.5);
+        }
+        ctx.strokeStyle = GRID_LINE_COLOR;
+        ctx.lineWidth   = 0.5;
+        ctx.stroke();
     }
-    for (let y = 0; y <= gridHeight; y++) {
-        ctx.moveTo(0,  y * cellSize + 0.5);
-        ctx.lineTo(W, y * cellSize + 0.5);
-    }
-    ctx.strokeStyle = GRID_LINE_COLOR;
-    ctx.lineWidth   = 0.5;
-    ctx.stroke();
 
     drawOuterBorder(ctx, W, H);
     drawRouter(
@@ -46,25 +72,29 @@ function drawFloorplan(ctx, state, cellSize, isRouterSelected) {
     );
 }
 
-export default function FloorplanEditor({ state, dispatch, cellSize }) {
+export default function FloorplanEditor({ state, dispatch, cellSize, generations }) {
     const canvasRef         = useRef(null);
     const [isRouterSelected, setIsRouterSelected] = useState(false);
+    const [showOverlay, setShowOverlay] = useState(true);
     const isDragging        = useRef(false);
+    const isDraggingRouter  = useRef(false);
 
     const handleStartRef = useRef(null);
     const handleMoveRef  = useRef(null);
     const handleEndRef   = useRef(null);
 
+    const heatmap    = state.heatmaps[state.activeGeneration];
+    const generation = generations[state.activeGeneration];
+
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-        drawFloorplan(canvas.getContext('2d'), state, cellSize, isRouterSelected);
-    }, [state, cellSize, isRouterSelected]);
+        drawCanvas(canvas.getContext('2d'), state, cellSize, isRouterSelected, heatmap, showOverlay);
+    }, [state, cellSize, isRouterSelected, heatmap, showOverlay]);
 
     useEffect(() => {
-        if (canvasRef.current) {
-            canvasRef.current.style.cursor = isRouterSelected ? 'cell' : 'crosshair';
-        }
+        if (!canvasRef.current) return;
+        canvasRef.current.style.cursor = isRouterSelected ? 'cell' : 'crosshair';
     }, [isRouterSelected]);
 
     function getCellCoords(e) {
@@ -92,15 +122,21 @@ export default function FloorplanEditor({ state, dispatch, cellSize }) {
         const { x, y } = getCellCoords(e);
         if (!inBounds(x, y)) return;
 
-        if (x === state.router.x && y === state.router.y) {
-            setIsRouterSelected(prev => !prev);
-            return;
-        }
+        // toolbar-driven "select then tap to place" flow, still here as a fallback
+        // for touch users who might find dragging the tiny router dot fiddly
         if (isRouterSelected) {
             dispatch({ type: 'MOVE_ROUTER', x, y });
             setIsRouterSelected(false);
+            dispatch({ type: 'COMMIT_EDIT' });
             return;
         }
+
+        const onRouter = x === state.router.x && y === state.router.y;
+        if (onRouter) {
+            isDraggingRouter.current = true;
+            return;
+        }
+
         isDragging.current = true;
         dispatch({ type: 'PAINT_CELL', x, y });
     }
@@ -111,7 +147,13 @@ export default function FloorplanEditor({ state, dispatch, cellSize }) {
 
         if (canvasRef.current && !isRouterSelected && !e.touches) {
             const overRouter = x === state.router.x && y === state.router.y;
-            canvasRef.current.style.cursor = overRouter ? 'pointer' : 'crosshair';
+            canvasRef.current.style.cursor = (overRouter || isDraggingRouter.current) ? 'grab' : 'crosshair';
+        }
+
+        if (isDraggingRouter.current) {
+            if (!inBounds(x, y)) return;
+            dispatch({ type: 'MOVE_ROUTER', x, y });
+            return;
         }
 
         if (!isDragging.current) return;
@@ -121,7 +163,10 @@ export default function FloorplanEditor({ state, dispatch, cellSize }) {
 
     function handleEnd(e) {
         e?.preventDefault();
-        isDragging.current = false;
+        const wasEditing = isDragging.current || isDraggingRouter.current;
+        isDragging.current       = false;
+        isDraggingRouter.current = false;
+        if (wasEditing) dispatch({ type: 'COMMIT_EDIT' });
     }
 
     handleStartRef.current = handleStart;
@@ -159,6 +204,14 @@ export default function FloorplanEditor({ state, dispatch, cellSize }) {
                 onMoveRouter={() => setIsRouterSelected(true)}
                 onDeselect={() => setIsRouterSelected(false)}
                 onClearAll={() => dispatch({ type: 'CLEAR_GRID' })}
+                showOverlay={showOverlay}
+                onToggleOverlay={() => setShowOverlay(v => !v)}
+            />
+
+            <GenerationSelector
+                activeIndex={state.activeGeneration}
+                generations={generations}
+                onSelect={(index) => dispatch({ type: 'SET_GENERATION', index })}
             />
 
             <canvas
@@ -178,6 +231,29 @@ export default function FloorplanEditor({ state, dispatch, cellSize }) {
                 isRouterSelected={isRouterSelected}
                 onDeselect={() => setIsRouterSelected(false)}
             />
+
+            {showOverlay && (
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                    {LEGEND.map(({ label, color, border }) => (
+                        <div key={label} className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <span
+                                className="inline-block w-3 h-3 rounded-sm shrink-0"
+                                style={{
+                                    backgroundColor: color,
+                                    border: border ? '1px solid #1e293b' : '1px solid transparent',
+                                }}
+                            />
+                            {label}
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {showOverlay && generation?.description && (
+                <p className="text-sm text-muted-foreground border-l-2 border-border pl-3 leading-relaxed">
+                    {generation.description}
+                </p>
+            )}
         </div>
     );
 }

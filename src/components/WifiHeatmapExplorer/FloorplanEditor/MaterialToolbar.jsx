@@ -1,4 +1,4 @@
-import { Trash2, Move } from 'lucide-react';
+import { Trash2, Move, Radio } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CELL_TYPE, CELL_CONFIGS } from '../lib/CellTypes.js';
 
@@ -17,6 +17,8 @@ const MATERIALS = [
  *   onMoveRouter: () => void,
  *   onDeselect?: () => void,
  *   onClearAll: () => void,
+ *   showOverlay: boolean,
+ *   onToggleOverlay: () => void,
  * }} props
  */
 export default function MaterialToolbar({
@@ -26,6 +28,8 @@ export default function MaterialToolbar({
                                             onMoveRouter,
                                             onDeselect,
                                             onClearAll,
+                                            showOverlay,
+                                            onToggleOverlay,
                                         }) {
     // Switches tool & exits router mode
     const handleMaterialSelect = (materialType) => {
@@ -91,6 +95,16 @@ export default function MaterialToolbar({
                 >
                     <Trash2 size={14} className="shrink-0" />
                     <span>Clear</span>
+                </Button>
+
+                <Button
+                    variant={showOverlay ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={onToggleOverlay}
+                    className="gap-1.5 flex-1 justify-center text-xs whitespace-nowrap h-9 sm:flex-initial"
+                >
+                    <Radio size={14} className="shrink-0" />
+                    <span>Signal</span>
                 </Button>
             </div>
 
