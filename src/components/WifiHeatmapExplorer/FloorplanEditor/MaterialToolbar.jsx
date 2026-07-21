@@ -1,4 +1,4 @@
-import { Trash2, Move, Radio } from 'lucide-react';
+import { Trash2, Radio } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CELL_TYPE, CELL_CONFIGS } from '../lib/CellTypes.js';
 
@@ -13,9 +13,6 @@ const MATERIALS = [
  * @param {{
  *   state: object,
  *   dispatch: Function,
- *   isRouterSelected: boolean,
- *   onMoveRouter: () => void,
- *   onDeselect?: () => void,
  *   onClearAll: () => void,
  *   showOverlay: boolean,
  *   onToggleOverlay: () => void,
@@ -24,28 +21,12 @@ const MATERIALS = [
 export default function MaterialToolbar({
                                             state,
                                             dispatch,
-                                            isRouterSelected,
-                                            onMoveRouter,
-                                            onDeselect,
                                             onClearAll,
                                             showOverlay,
                                             onToggleOverlay,
                                         }) {
-    // Switches tool & exits router mode
     const handleMaterialSelect = (materialType) => {
         dispatch({ type: 'SET_MATERIAL', material: materialType });
-        if (isRouterSelected && onDeselect) {
-            onDeselect();
-        }
-    };
-
-    // Toggles router mode on/off
-    const handleRouterClick = () => {
-        if (isRouterSelected && onDeselect) {
-            onDeselect();
-        } else {
-            onMoveRouter();
-        }
     };
 
     return (
@@ -54,7 +35,7 @@ export default function MaterialToolbar({
             {/* Material Selector Grid */}
             <div className="grid grid-cols-2 gap-1.5 w-full min-w-0 xs:grid-cols-4 sm:flex sm:items-center sm:w-auto">
                 {MATERIALS.map((config) => {
-                    const isActive = state.activeMaterial === config.type && !isRouterSelected;
+                    const isActive = state.activeMaterial === config.type;
                     return (
                         <Button
                             key={config.type}
@@ -77,16 +58,6 @@ export default function MaterialToolbar({
 
             {/* Action Buttons */}
             <div className="flex items-center gap-1.5 w-full min-w-0 sm:w-auto">
-                <Button
-                    variant={isRouterSelected ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={handleRouterClick}
-                    className="gap-1.5 flex-1 justify-center text-xs whitespace-nowrap h-9 sm:flex-initial"
-                >
-                    <Move size={14} className="shrink-0" />
-                    <span>Router</span>
-                </Button>
-
                 <Button
                     variant="outline"
                     size="sm"

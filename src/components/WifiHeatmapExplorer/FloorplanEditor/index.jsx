@@ -7,11 +7,10 @@ import GenerationSelector from './GenerationSelector.jsx';
 import { drawOuterBorder, drawRouter } from '../lib/CanvasUtils.js';
 
 const ROUTER_COLOR    = '#38bdf8';
-const ROUTER_SELECTED = '#f59e0b';
 const ROUTER_OUTLINE  = '#0f172a';
 const GRID_LINE_COLOR = '#1e293b';
 
-function drawCanvas(ctx, state, cellSize, isRouterSelected, heatmap, showOverlay) {
+function drawCanvas(ctx, state, cellSize, heatmap, showOverlay) {
     const { grid, gridWidth, gridHeight, router } = state;
     const W = gridWidth  * cellSize;
     const H = gridHeight * cellSize;
@@ -63,18 +62,11 @@ function drawCanvas(ctx, state, cellSize, isRouterSelected, heatmap, showOverlay
     }
 
     drawOuterBorder(ctx, W, H);
-    drawRouter(
-        ctx,
-        router,
-        cellSize,
-        isRouterSelected ? ROUTER_SELECTED : ROUTER_COLOR,
-        ROUTER_OUTLINE
-    );
+    drawRouter(ctx, router, cellSize, ROUTER_COLOR, ROUTER_OUTLINE);
 }
 
 export default function FloorplanEditor({ state, dispatch, cellSize, generations }) {
     const canvasRef         = useRef(null);
-    const [isRouterSelected, setIsRouterSelected] = useState(false);
     const [showOverlay, setShowOverlay] = useState(true);
     const isDragging        = useRef(false);
     const isDraggingRouter  = useRef(false);
@@ -89,13 +81,8 @@ export default function FloorplanEditor({ state, dispatch, cellSize, generations
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-        drawCanvas(canvas.getContext('2d'), state, cellSize, isRouterSelected, heatmap, showOverlay);
-    }, [state, cellSize, isRouterSelected, heatmap, showOverlay]);
-
-    useEffect(() => {
-        if (!canvasRef.current) return;
-        canvasRef.current.style.cursor = isRouterSelected ? 'cell' : 'crosshair';
-    }, [isRouterSelected]);
+        drawCanvas(canvas.getContext('2d'), state, cellSize, heatmap, showOverlay);
+    }, [state, cellSize, heatmap, showOverlay]);
 
     function getCellCoords(e) {
         const canvas = canvasRef.current;
@@ -122,15 +109,6 @@ export default function FloorplanEditor({ state, dispatch, cellSize, generations
         const { x, y } = getCellCoords(e);
         if (!inBounds(x, y)) return;
 
-        // toolbar-driven "select then tap to place" flow, still here as a fallback
-        // for touch users who might find dragging the tiny router dot fiddly
-        if (isRouterSelected) {
-            dispatch({ type: 'MOVE_ROUTER', x, y });
-            setIsRouterSelected(false);
-            dispatch({ type: 'COMMIT_EDIT' });
-            return;
-        }
-
         const onRouter = x === state.router.x && y === state.router.y;
         if (onRouter) {
             isDraggingRouter.current = true;
@@ -145,7 +123,7 @@ export default function FloorplanEditor({ state, dispatch, cellSize, generations
         e.preventDefault();
         const { x, y } = getCellCoords(e);
 
-        if (canvasRef.current && !isRouterSelected && !e.touches) {
+        if (canvasRef.current && !e.touches) {
             const overRouter = x === state.router.x && y === state.router.y;
             canvasRef.current.style.cursor = (overRouter || isDraggingRouter.current) ? 'grab' : 'crosshair';
         }
@@ -200,9 +178,6 @@ export default function FloorplanEditor({ state, dispatch, cellSize, generations
             <MaterialToolbar
                 state={state}
                 dispatch={dispatch}
-                isRouterSelected={isRouterSelected}
-                onMoveRouter={() => setIsRouterSelected(true)}
-                onDeselect={() => setIsRouterSelected(false)}
                 onClearAll={() => dispatch({ type: 'CLEAR_GRID' })}
                 showOverlay={showOverlay}
                 onToggleOverlay={() => setShowOverlay(v => !v)}
@@ -226,11 +201,7 @@ export default function FloorplanEditor({ state, dispatch, cellSize, generations
                 style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none', aspectRatio: '4/3' }}
             />
 
-            <RouterMarker
-                router={state.router}
-                isRouterSelected={isRouterSelected}
-                onDeselect={() => setIsRouterSelected(false)}
-            />
+            <RouterMarker router={state.router} />
 
             {showOverlay && (
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
