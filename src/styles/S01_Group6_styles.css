@@ -10,7 +10,6 @@
 html:has(#wifi-evolution-exhibit) {
     background: radial-gradient(circle at top right, #0f172a 0%, #020617 100%) !important;
     min-height: 100vh;
-    overflow-x: hidden;
 }
 
 body:has(#wifi-evolution-exhibit) {
@@ -48,7 +47,6 @@ body:has(#wifi-evolution-exhibit) {
     --c-teal-pale:  #115e59;
 
     color: var(--foreground);
-    overflow-x: hidden;
 }
 
 @theme inline {
