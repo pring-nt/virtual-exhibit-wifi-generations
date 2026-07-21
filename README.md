@@ -83,6 +83,8 @@ src/
 │   │   ├── button.tsx
 │   │   ├── card.tsx
 │   │   ├── carousel.tsx
+│   │   ├── dialog.tsx
+│   │   ├── scroll-area.tsx
 │   │   └── tabs.tsx
 │   ├── WifiComparison/                <- Wifi generation comparator
 │   │   └── index.jsx
