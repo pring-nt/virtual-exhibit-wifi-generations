@@ -1,12 +1,10 @@
 import { useReducer } from 'react';
-import { Button } from '@/components/ui/button';
 
 import { CELL_TYPE } from './lib/CellTypes.js';
 import { GENERATIONS } from './lib/Generations.js';
-import { computeAllHeatmaps } from './lib/Propagation.js';
+import { computeHeatmap } from './lib/Propagation.js';
 
 import FloorplanEditor from './FloorplanEditor/index.jsx';
-import HeatmapViewer from './HeatmapViewer/index.jsx';
 
 // ---------------------------------------------------------------------------
 // Grid config
@@ -100,33 +98,31 @@ function createPresetGrid(gridWidth, gridHeight) {
 // Reducer
 // ---------------------------------------------------------------------------
 
+function recompute(grid, gridWidth, gridHeight, router, activeGeneration) {
+    return computeHeatmap(grid, gridWidth, gridHeight, router, GENERATIONS[activeGeneration]);
+}
+
 function createInitialState() {
+    const gridWidth        = GRID_WIDTH;
+    const gridHeight       = GRID_HEIGHT;
+    const grid              = createPresetGrid(gridWidth, gridHeight);
+    const router            = { x: 10, y: 7 };
+    const activeGeneration  = 0;
+
     return {
-        mode:             'floorplan',
-        gridWidth:        GRID_WIDTH,
-        gridHeight:       GRID_HEIGHT,
-        grid:             createPresetGrid(GRID_WIDTH, GRID_HEIGHT),
-        router:           { x: 10, y: 7 },
+        gridWidth,
+        gridHeight,
+        grid,
+        router,
         activeMaterial:   CELL_TYPE.DRYWALL,
-        activeGeneration: 0,
-        heatmaps:         [],
+        activeGeneration,
+        // sparse cache keyed by generation index, only computes the ones you've actually looked at
+        heatmaps: { [activeGeneration]: recompute(grid, gridWidth, gridHeight, router, activeGeneration) },
     };
 }
 
 function reducer(state, action) {
     switch (action.type) {
-
-        case 'SET_MODE': {
-            if (action.mode === state.mode) return state;
-            if (action.mode === 'heatmap') {
-                const heatmaps = computeAllHeatmaps(
-                    state.grid, state.gridWidth, state.gridHeight,
-                    state.router, GENERATIONS,
-                );
-                return { ...state, mode: 'heatmap', heatmaps };
-            }
-            return { ...state, mode: 'floorplan', heatmaps: [] };
-        }
 
         case 'PAINT_CELL': {
             const { x, y } = action;
@@ -144,14 +140,30 @@ function reducer(state, action) {
         case 'MOVE_ROUTER': {
             const { x, y } = action;
             if (state.grid[y * state.gridWidth + x] !== CELL_TYPE.EMPTY) return state;
+            if (x === state.router.x && y === state.router.y) return state;
             return { ...state, router: { x, y } };
         }
 
-        case 'SET_GENERATION':
-            return { ...state, activeGeneration: action.index };
+        // fires once when a stroke or router drag ends
+        case 'COMMIT_EDIT': {
+            const heatmap = recompute(state.grid, state.gridWidth, state.gridHeight, state.router, state.activeGeneration);
+            // grid/router changed, so whatever else was cached is stale now
+            return { ...state, heatmaps: { [state.activeGeneration]: heatmap } };
+        }
 
-        case 'CLEAR_GRID':
-            return { ...state, grid: new Uint8Array(state.gridWidth * state.gridHeight) };
+        case 'SET_GENERATION': {
+            if (state.heatmaps[action.index]) {
+                return { ...state, activeGeneration: action.index };
+            }
+            const heatmap = recompute(state.grid, state.gridWidth, state.gridHeight, state.router, action.index);
+            return { ...state, activeGeneration: action.index, heatmaps: { ...state.heatmaps, [action.index]: heatmap } };
+        }
+
+        case 'CLEAR_GRID': {
+            const newGrid = new Uint8Array(state.gridWidth * state.gridHeight);
+            const heatmap = recompute(newGrid, state.gridWidth, state.gridHeight, state.router, state.activeGeneration);
+            return { ...state, grid: newGrid, heatmaps: { [state.activeGeneration]: heatmap } };
+        }
 
         default:
             return state;
@@ -165,48 +177,15 @@ function reducer(state, action) {
 export default function WifiHeatmapExplorer() {
     const [state, dispatch] = useReducer(reducer, null, createInitialState);
 
-    const isHeatmap = state.mode === 'heatmap';
-
     return (
         /* Added min-w-0 and px-2 to ensure the 640px wrapper never overflows small phone viewports */
         <div className="wifi-explorer flex flex-col gap-3 w-full max-w-[640px] min-w-0 mx-auto px-2 sm:px-0">
-
-            <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full min-w-0">
-                <Button
-                    variant={isHeatmap ? 'outline' : 'default'}
-                    size="sm"
-                    className="w-full sm:w-auto sm:flex-1 truncate"
-                    onClick={() => dispatch({ type: 'SET_MODE', mode: 'floorplan' })}
-                >
-                    Edit Floor Plan
-                </Button>
-                <Button
-                    variant={isHeatmap ? 'default' : 'outline'}
-                    size="sm"
-                    className="w-full sm:w-auto sm:flex-1 truncate"
-                    onClick={() => dispatch({ type: 'SET_MODE', mode: 'heatmap' })}
-                >
-                    View Heatmap
-                </Button>
-            </div>
-
-            <div className="w-full min-w-0">
-                {isHeatmap ? (
-                    <HeatmapViewer
-                        state={state}
-                        dispatch={dispatch}
-                        cellSize={CELL_SIZE}
-                        generations={GENERATIONS}
-                    />
-                ) : (
-                    <FloorplanEditor
-                        state={state}
-                        dispatch={dispatch}
-                        cellSize={CELL_SIZE}
-                    />
-                )}
-            </div>
-
+            <FloorplanEditor
+                state={state}
+                dispatch={dispatch}
+                cellSize={CELL_SIZE}
+                generations={GENERATIONS}
+            />
         </div>
     );
 }

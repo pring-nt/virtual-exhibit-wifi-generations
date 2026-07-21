@@ -33,7 +33,7 @@ export default function GenerationSelector({ activeIndex, generations, onSelect 
             </Tabs>
 
             {/* Detail row for the active generation — added flex-wrap to prevent overflow */}
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground px-0.5">
+            <div className="flex flex-wrap items-center mt-2 gap-x-2 gap-y-1 text-xs text-muted-foreground px-0.5">
                 <span className="font-mono font-medium text-foreground">{active.standard}</span>
                 <span>·</span>
                 <span>{active.year}</span>
