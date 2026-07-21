@@ -88,17 +88,16 @@ src/
 │   │   └── index.jsx
 │   ├── WifiHeatmapExplorer/           <- Interactive signal simulator engine
 │   │   ├── FloorplanEditor/
-│   │   │   ├── index.jsx              <- Canvas space interaction & drawing logic
-│   │   │   ├── MaterialToolbar.jsx    <- Layout brush selector & system controls
-│   │   │   └── RouterMarker.jsx       <- Dynamic placement banner status hook
-│   │   ├── HeatmapViewer/
-│   │   │   ├── GenerationSelector.jsx <- Router target band navigation tabs
-│   │   │   └── index.jsx              <- Signal overlay visual grid assembly
+│   │   │   ├── index.jsx              <- Canvas interaction, drawing & live heatmap overlay
+│   │   │   ├── MaterialToolbar.jsx    <- Brush selector, Clear All, and Signal overlay toggle
+│   │   │   ├── GenerationSelector.jsx <- Wi-Fi generation navigation tabs
+│   │   │   └── RouterMarker.jsx       <- Router position status line
 │   │   ├── lib/
 │   │   │   ├── CanvasUtils.js         <- Canvas outer border and router drawing functions
 │   │   │   ├── CellTypes.js           <- Material types & absorption decibel loss
 │   │   │   ├── Generations.js         <- Operational standard parameters
-│   │   │   └── Propagation.js         <- Dijkstra path calculations & diffusion
+│   │   │   ├── Propagation.js         <- Dijkstra path calculations & diffusion
+│   │   │   └── SignalColor.js         <- Shared heatmap color scale & legend
 │   │   └── index.jsx                  <- Global context, state, reducer setup
 │   ├── DistroQuiz.jsx
 │   ├── ImageGallery.jsx
@@ -151,8 +150,8 @@ The original proposal described the heatmap as "radial gradient painting that pr
 **Diffusion passes for realistic corner leakage.**
 After the main Dijkstra pass, two diffusion rounds propagate a fraction of each cell's signal to orthogonal neighbors. Passes alternate scan direction (forward then backward) to prevent the directional bias that arises when all passes scan in the same order. This keeps corner leakage symmetric without being computationally expensive.
 
-**All heatmaps precomputed on mode entry.**
-When the user clicks "View Heatmap," the component immediately computes all seven generation heatmaps and caches them as `Float32Array[]` in the reducer state. Switching between generations is then an instant array index swap with no recomputation. On returning to floor plan mode, the cache is discarded entirely so re-entry always reflects the current layout.
+**Heatmap recomputed on edit, not on mode switch.**
+The floor plan editor and heatmap view were later merged into a single live canvas instead of two separate modes. Heatmaps are cached per generation index: switching to a generation that's already cached is an instant lookup, switching to one that isn't triggers a single fresh computation. A paint stroke or router drag only recomputes once — on release — since recomputing on every intermediate cell during the drag itself would be far too slow. Any edit invalidates the whole cache, since none of it applies to the new layout anymore.
 
 ---
 
@@ -282,7 +281,7 @@ The exhibit covers the following content areas:
 
 #### Wi-Fi Floor Plan Simulator
 
-A 2D floor plan editor where users paint wall materials onto a grid, place a router, and toggle a signal strength heatmap. The heatmap updates when the user switches between Wi-Fi generations, visually demonstrating how different standards handle range, frequency, and obstacle penetration.
+A 2D floor plan editor where users paint wall materials onto a grid, drag the router around, and toggle a live signal-strength overlay. The heatmap updates as soon as an edit finishes, and when the user switches between Wi-Fi generations, visually demonstrating how different standards handle range, frequency, and obstacle penetration.
 
 **The Grid**
 
@@ -299,11 +298,11 @@ The floor plan is a tile-based rectangular grid (40x30 cells) rendered top-down 
 
 **Router Placement**
 
-A router marker is displayed on the grid. Users click the router (or the Router button in the toolbar) to enter placement mode, then click any empty cell to move it. The router cannot be placed on a wall cell.
+A router marker is displayed on the grid. Users press and drag the marker to reposition it; it can't be dropped on a wall cell, and the heatmap overlay refreshes as soon as the drag ends.
 
-**Heatmap Mode**
+**Signal Overlay**
 
-Clicking "View Heatmap" precomputes signal heatmaps for all seven generations simultaneously using a max-heap Dijkstra propagation algorithm. Rather than forcing a simple straight-line Euclidean falloff, the engine dynamically calculates the path of least resistance—allowing signals to realistically route around heavy obstacles like metal appliances if doing so preserves more dBm than punching through them. Signal strength along any evaluated trajectory is calculated as:
+Toggling the Signal button on the toolbar computes a signal heatmap for the active generation using a max-heap Dijkstra propagation algorithm. Rather than forcing a simple straight-line Euclidean falloff, the engine dynamically calculates the path of least resistance—allowing signals to realistically route around heavy obstacles like metal appliances if doing so preserves more dBm than punching through them. Signal strength along any evaluated trajectory is calculated as:
 
 $$\text{Signal}_{\text{raw}} = S_{\max} - (C_d \cdot d_{\text{path}}) - \sum_{i=1}^{n} (A_{i} \cdot P_{w})$$
 
@@ -317,7 +316,7 @@ corners to eliminate artificial line-of-sight shadow artifacts. The resulting da
 **0.0** to **1.0** scale for canvas color rendering.
 
 
-Switching between generations is an instant cache lookup with no recomputation. Returning to floor plan mode discards the cache.
+Switching to a generation that's already cached is an instant lookup; switching to one that isn't triggers a single fresh computation for just that generation. Any floor plan edit or router move invalidates the cache and recomputes the active generation once the stroke or drag finishes.
 
 | Color | Signal Strength |
 | --- | --- |
@@ -341,22 +340,19 @@ Selecting a generation updates the heatmap canvas and displays a short summary d
 
 ### Layout & Spacing
 
-The exhibit uses a clean, article-style layout with the Wi-Fi simulator placed at the end of the page as a synthesis activity — after the background history, frequency band explainer, and per-standard sections. The simulator itself uses a two-mode interface: Edit Floor Plan (default) and View Heatmap. Controls are grouped in a toolbar above the canvas. The heatmap legend and generation summary sit below the canvas.
+The exhibit uses a clean, article-style layout with the Wi-Fi simulator placed at the end of the page as a synthesis activity — after the background history, frequency band explainer, and per-standard sections. The simulator itself is a single live view with no mode switching. Controls are grouped in a toolbar above the canvas. The generation summary sits above the canvas, between the generation tabs and the grid; the heatmap legend sits below the canvas.
 
 ### UI Components & Tone
 
 The main UI component is the `WifiHeatmapExplorer`, which uses shadcn/ui (Sera preset) for all buttons and tabs. The Sera preset was chosen for its sharp, non-rounded aesthetic which suits a technical instrument-style tool.
 
-**Edit Floor Plan mode:**
-- Toolbar with wall material brush buttons (Drywall, Concrete, Metal, Eraser), a Router placement button, and a Clear All button
-- Canvas with `cursor-crosshair` for painting and `cursor-pointer` when hovering the router
-- Status bar that becomes an amber callout banner during router placement mode
-
-**View Heatmap mode:**
-- shadcn Tabs generation selector spanning the canvas width
-- Detail row showing the selected generation's IEEE standard, year, and frequency band
-- Canvas rendering the signal heatmap with wall overlays
-- Color legend and one-line generation summary below
+**Floor plan / heatmap view:**
+- Toolbar with wall material brush buttons (Drywall, Concrete, Metal, Eraser), a Clear All button, and a Signal toggle that switches the canvas between a plain floor plan and the live heatmap overlay
+- shadcn Tabs generation selector spanning the canvas width, with a detail row showing the selected generation's IEEE standard, year, and frequency band
+- One-line generation summary above the canvas, shown when the overlay is on
+- Canvas with `cursor-crosshair` for painting and `cursor-grab` when hovering or dragging the router; renders flat wall colors with grid lines when the overlay is off, or the signal heatmap with translucent wall outlines when it's on
+- Router position status line below the canvas
+- Color legend below the canvas, shown when the overlay is on
 
 ---
 
@@ -366,10 +362,10 @@ The main UI component is the `WifiHeatmapExplorer`, which uses shadcn/ui (Sera p
 
 ![Wifi Heatmap View](./src/assets/WifiHeatmap.png)
 
-> *The Simulator tab showing the heatmap overlay for 802.11b.*
+> *The Simulator showing the heatmap overlay for 802.11b.*
 
 ### Figure 2 - Floor Plan Builder
 
 ![Floor Plan Builder](./src/assets/WifiFloorPlan.png)
 
-> *The Simulator tab showing the floor plan builder.*
+> *The Simulator showing the floor plan builder.*
